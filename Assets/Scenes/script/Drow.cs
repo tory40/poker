@@ -12,10 +12,12 @@ public class Drow : MonoBehaviour
     List<int> marks = new List<int>();
     int cardID;
     List<CardController> cards = new List<CardController>();
+    int hand = 0;
     // Start is called before the first frame update
     void Start()
     {
-        Drowcard(5);
+        StartCard();
+        Check();
     }
 
     // Update is called once per frame
@@ -23,32 +25,47 @@ public class Drow : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Drowcard(5);
+            StartCard();
+            Check();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Drowcard(2);
+            DisCard(2);
         }
     }
+    void DisCard(int i)
+    {
 
-    void Drowcard(int j)
+    }
+
+    void StartCard() 
     {
         deck.Clear();
+        hand = 0;
         foreach (CardController card in cards)
         {
             Destroy(card.gameObject);
         }
         cards.Clear();
+        Drowcard(5);
+    }
+    void Drowcard(int j)
+    {
         for (int i = 0; i < j; ++i)
         {
             cardID = Random.Range(0, 52);
             deck.Add(cardID);
             Debug.Log(cardID);
         }
-        deck.Sort();
-        for (int i = 0; i < j; ++i)
+        for (int i = hand+0; i < hand+j; ++i)
         {
             CardController card = Instantiate(cardPrefab, field, false);
             card.Init(deck[i]);
             cards.Add(card);
         }
-        Check();
+        hand += j;
+        deck.Sort();
     }
     [SerializeField] Text typetext;
     List<string> texts = new List<string> { "High card" , "One pair" , "One pair mark" , "Two pair" , "Three of a kind" , "High card flush" , "One pair flush" , "Straight" , "Two pair twin" , "Two pair mark",
