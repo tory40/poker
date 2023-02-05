@@ -12,10 +12,14 @@ public class CardController : MonoBehaviour
         view = GetComponent<CardView>();
     }
 
-    public void Init(int cardID)
+    public void Init(int cardID,int ID)
     {
-        model = new CardModel(cardID);
+        model = new CardModel(cardID,ID);
         view.Show(model);
 
+    }
+    public void OnClick()
+    {
+        Drow.Click(model.card);
     }
 }

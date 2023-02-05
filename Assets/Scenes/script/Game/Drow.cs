@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Drow : MonoBehaviour
 {
+    int discard;
+    bool candis=false;
     [SerializeField] Transform field;
     [SerializeField] CardController cardPrefab;
     List<int> deck = new List<int>();
@@ -33,10 +35,19 @@ public class Drow : MonoBehaviour
             Drowcard(2);
             DisCard(2);
         }
+        if(candis)
+        {
+
+        }
+    }
+    static public void Click(int i)
+    {
+
     }
     void DisCard(int i)
     {
-
+        candis = true;
+        discard = i;
     }
 
     void StartCard() 
@@ -61,7 +72,7 @@ public class Drow : MonoBehaviour
         for (int i = hand+0; i < hand+j; ++i)
         {
             CardController card = Instantiate(cardPrefab, field, false);
-            card.Init(deck[i]);
+            card.Init(deck[i],i);
             cards.Add(card);
         }
         hand += j;
