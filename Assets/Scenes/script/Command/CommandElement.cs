@@ -30,6 +30,35 @@ public class CommandElement : MonoBehaviour
         {
             inputField = transform.Find("InputField").GetComponent<InputField>();
             level = float.Parse(inputField.text);
+            switch(type)
+            {
+                case "Change":
+                    if(level < 0)
+                    {
+                        level = 0;
+                    }
+                    else if (level > 5)
+                    {
+                        level = 5;
+                    }
+                    break;
+                case "Draw":
+                    if (level < 0)
+                    {
+                        level = 0;
+                    }
+                    else if (level > 9)
+                    {
+                        level = 9;
+                    }
+                    break;
+                case "Cost":
+                    if (level < 0)
+                    {
+                        level = 0;
+                    }
+                    break;
+            }
             GameObject.Find("RuleOption").GetComponent<MainRule>().ChangeLevel(elementnumber, level);
         }
         catch

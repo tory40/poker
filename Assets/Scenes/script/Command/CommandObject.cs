@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CommandObject : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class CommandObject : MonoBehaviour
     public int speed = 0;
     public int objectnumber=0;
     [SerializeField] CommandElement[] objects;
+    public int canturn =1;
+    public bool beforeturn = false;
+    public bool objectbool = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +26,7 @@ public class CommandObject : MonoBehaviour
         }
         elements[3].type = "Cost";
         elements[8].type = "Turn";
-        for (int i = 1; i <= 9; ++i)
+        for (int i = 1; i <= 7; ++i)
         {
             Transform trans = GameObject.Find("Position(" + i.ToString() + ")").GetComponent<Transform>();
             transforms.Add(trans);
@@ -37,9 +41,35 @@ public class CommandObject : MonoBehaviour
     public void Click()
     {
         GameObject.Find("RuleOption").GetComponent<MainRule>().serectobject = this;
-        for(int i = 0; i < 9; ++i)
+        for(int i = 0; i < 7; ++i)
         {
             Display(i);
+        }
+        GameObject.Find("Name").GetComponent<InputField>().text= GameObject.Find("RuleOption").GetComponent<MainRule>().CommandList[objectnumber].commandname;
+        GameObject.Find("Speed").GetComponent<InputField>().text = GameObject.Find("RuleOption").GetComponent<MainRule>().CommandList[objectnumber].speed.ToString();
+        GameObject.Find("CanTurn").transform.Find("InputField").GetComponent<InputField>().text = GameObject.Find("RuleOption").GetComponent<MainRule>().CommandList[objectnumber].canturn.ToString();
+        if(beforeturn)
+        {
+            GameObject.Find("CanTurn").transform.Find("Button").transform.Find("Text").GetComponent<Text>().text = "以前に";
+        }
+        else
+        {
+            GameObject.Find("CanTurn").transform.Find("Button").transform.Find("Text").GetComponent<Text>().text = "以降に";
+        }
+        switch(allin)
+        {
+            case 0:
+                GameObject.Find("Allin").transform.Find("Button").transform.Find("Text").GetComponent<Text>().text = "オールイン時には発動できない";
+                break;
+            case 1:
+                GameObject.Find("Allin").transform.Find("Button").transform.Find("Text").GetComponent<Text>().text = "オールイン時にしか発動できない";
+                break;
+            case 2:
+                GameObject.Find("Allin").transform.Find("Button").transform.Find("Text").GetComponent<Text>().text = "制限なし";
+                break;
+            default:
+                return;
+
         }
     }
     public void Display(int i)
