@@ -1,9 +1,12 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhotonSet : MonoBehaviourPunCallbacks
 {
+    [SerializeField] InputField input;
+    [SerializeField] Text text;
     bool maxPlayer =false;
     bool joinRoom = false;
     int typenum;
@@ -13,13 +16,25 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         typenum = type;
         switch (type)
         {
+            //フリーマッチ
             case 1:
                 PhotonNetwork.JoinRandomRoom();
                 break;
+            //ルームオリジナル
             case 2:
+                int i = Random.Range(10000, 99999);
+                text.text = i.ToString();
+                PhotonNetwork.CreateRoom(i.ToString());
                 break;
+            //ルームデフォルト
             case 3:
-
+                int j = Random.Range(10000, 99999);
+                text.text = j.ToString();
+                PhotonNetwork.CreateRoom(j.ToString());
+                break;
+            //ジョインルーム
+            case 4:
+                PhotonNetwork.JoinRoom(input.text);
                 break;
             default:
                 break;

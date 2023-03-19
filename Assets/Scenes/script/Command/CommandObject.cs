@@ -19,13 +19,11 @@ public class CommandObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 9; ++i)
+        for (int i = 0; i < 7; ++i)
         {
             CommandElement command = new CommandElement();
             elements.Add(command);
         }
-        elements[3].type = "Cost";
-        elements[8].type = "Turn";
         for (int i = 1; i <= 7; ++i)
         {
             Transform trans = GameObject.Find("Position(" + i.ToString() + ")").GetComponent<Transform>();
@@ -43,6 +41,7 @@ public class CommandObject : MonoBehaviour
         GameObject.Find("RuleOption").GetComponent<MainRule>().serectobject = this;
         for(int i = 0; i < 7; ++i)
         {
+            Debug.Log(elements[i].type);
             Display(i);
         }
         GameObject.Find("Name").GetComponent<InputField>().text= GameObject.Find("RuleOption").GetComponent<MainRule>().CommandList[objectnumber].commandname;
@@ -160,5 +159,10 @@ public class CommandObject : MonoBehaviour
                     return;
             }
         }
+    }
+    public void Changebool()
+    {
+        Debug.Log(objectnumber);
+        GameObject.Find("RuleOption").GetComponent<MainRule>().ChangeBool(objectnumber);
     }
 }

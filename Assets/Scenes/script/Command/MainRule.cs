@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class MainRule : MonoBehaviour
 {
     public List<CommandObject> CommandList = new List<CommandObject>();
-    public List<CommandObject> DefaultCommand = new List<CommandObject>();
+    public List<DefalutRule> DefaultCommand = new List<DefalutRule>();
+    DefalutRule getdefalut;
     public CommandObject serectobject;
     public int startpoint=10000;
     public int betpoint=100;
@@ -22,11 +23,7 @@ public class MainRule : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 1; i <= 30; ++i)
-        {
-            CommandObject obj = new CommandObject();
-            DefaultCommand.Add(obj);
-        }
+        //デフォルトのデータを読み込む
         for (int i=0; i<27;++i)
         {
             PokerType typenum = new PokerType();
@@ -50,6 +47,30 @@ public class MainRule : MonoBehaviour
             for (int i = 1; i <= 30; ++i)
             {
                 CommandObject obj = GameObject.Find("Toggle (" + i.ToString() + ")").GetComponent<CommandObject>();
+                for (int j = 0; j < 7; ++j)
+                {
+                    obj.elements.Add(new CommandElement());
+                }
+                obj.elements[3].type = "Cost";
+                if(i-1<DefaultCommand.Count)
+                {
+                    getdefalut = DefaultCommand[i-1];
+                    for(int j=0; j<7; ++j)
+                    {
+                        obj.elements[j].elementnumber=j;
+                        obj.elements[j].type = getdefalut.types[j];
+                        obj.elements[j].mine = getdefalut.mines[j];
+                        obj.elements[j].level = getdefalut.levels[j];
+                    }
+                    obj.allin = getdefalut.allin;
+                    obj.commandname = getdefalut.commandname;
+                    obj.speed = getdefalut.speed;
+                    obj.canturn = getdefalut.canturn;
+                    obj.beforeturn = getdefalut.beforeturn;
+                    obj.objectbool = getdefalut.objectbool;
+                    obj.gameObject.GetComponent<Toggle>().isOn = obj.objectbool;
+                    obj.transform.Find("Button").transform.Find("Text").GetComponent<Text>().text= obj.commandname;
+                }
                 CommandList.Add(obj);
             }
         }
@@ -181,6 +202,17 @@ public class MainRule : MonoBehaviour
                 return;
         }
         CommandList[serectobject.objectnumber].Display(elementnum);
+    }
+    public void ChangeBool(int number)
+    {
+        try
+        {
+            CommandList[number].objectbool = !CommandList[number].objectbool;
+        }
+        catch
+        {
+
+        }
     }
     [SerializeField] InputField startinput;
     [SerializeField] InputField betinput;
