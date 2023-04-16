@@ -3,6 +3,7 @@ using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class PhotonSet : MonoBehaviourPunCallbacks
 {
@@ -57,11 +58,17 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 maxPlayer = true;
                 if(typenum==1)
                 {
-
+                    GameObject.Find("Rule").GetComponent<RuleInit>().Default();
+                    JumpScene();
                 }
                 if (typenum == 3)
                 {
-                    SharePro();
+                    if (roomhost)
+                    {
+                        GameObject.Find("Rule").GetComponent<RuleInit>().Default();
+                        SharePro();
+                    }
+
                 }
                 if (typenum == 2)
                 {
@@ -136,6 +143,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 photonView.RPC(nameof(ShareRist2), RpcTarget.Others, i, j,ruleinit.CommandList[i].elements[j].type,ruleinit.CommandList[i].elements[j].mine.ToString(),ruleinit.CommandList[i].elements[j].level);
             }
         }
+        photonView.RPC(nameof(JumpScene), RpcTarget.All);
     }
     [PunRPC]
     public void ShareInit(int startPoint, int betPoint, float winMine, float loseMine, float winEnemy, float loseEnemy, string winBool, int winScore, int endBattle)
@@ -171,5 +179,11 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         ruleinit.CommandList[i].elements[j].type = tYpe;
         ruleinit.CommandList[i].elements[j].mine = Convert.ToBoolean(mIne);
         ruleinit.CommandList[i].elements[j].level = lEvel;
+    }
+    [PunRPC]
+
+    public void JumpScene()
+    {
+        SceneManager.LoadScene("SampleScene");
     }
 }

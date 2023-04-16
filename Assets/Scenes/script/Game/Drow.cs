@@ -69,14 +69,19 @@ public class Drow : MonoBehaviour
             deck.Add(cardID);
             Debug.Log(cardID);
         }
-        for (int i = hand+0; i < hand+j; ++i)
+        deck.Sort();
+        foreach (CardController card in cards)
+        {
+            Destroy(card.gameObject);
+        }
+        cards.Clear();
+        for (int i = 0; i < hand+j; ++i)
         {
             CardController card = Instantiate(cardPrefab, field, false);
             card.Init(deck[i],i);
             cards.Add(card);
         }
         hand += j;
-        deck.Sort();
     }
     [SerializeField] Text typetext;
     List<string> texts = new List<string> { "High card" , "One pair" , "One pair mark" , "Two pair" , "Three of a kind" , "High card flush" , "One pair flush" , "Straight" , "Two pair twin" , "Two pair mark",

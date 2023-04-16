@@ -45,7 +45,7 @@ public class RuleInit : MonoBehaviour
     }
     public void Default()
     {
-        CommandList = serectrule.CommandList;
+        CommandList = serectrule.DefaultList;
         startpoint = 10000;
         betpoint = 100;
         winmine = 1;
@@ -55,6 +55,6 @@ public class RuleInit : MonoBehaviour
         winbool = true;
         winscore = 999999;
         endbattle = 99;
-        types = serectrule.types;
+        types = serectrule.defaulttypes;
     }
 }

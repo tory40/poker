@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainRule : MonoBehaviour
 {
     public List<CommandObject> CommandList = new List<CommandObject>();
+    public List<CommandObject> DefaultList = new List<CommandObject>();
     public List<DefalutRule> DefaultCommand = new List<DefalutRule>();
     DefalutRule getdefalut;
     public CommandObject serectobject;
@@ -19,17 +20,47 @@ public class MainRule : MonoBehaviour
     public int winscore=999999;
     public int endbattle=99;
     public List<PokerType> types = new List<PokerType>();
+    public List<PokerType> defaulttypes = new List<PokerType>();
 
     // Start is called before the first frame update
     void Start()
     {
         //デフォルトのデータを読み込む
-        for (int i=0; i<27;++i)
+        for (int i = 0; i < 27; ++i)
         {
             PokerType typenum = new PokerType();
             typenum.type = typenum.texts[i];
             typenum.strong = i;
             types.Add(typenum);
+            defaulttypes.Add(typenum);
+        }
+        for (int i = 1; i <= 30; ++i)
+        {
+            CommandObject obj = new CommandObject();
+            for (int j = 0; j < 7; ++j)
+            {
+                obj.elements.Add(new CommandElement());
+            }
+            obj.elements[3].type = "Cost";
+            if (i - 1 < DefaultCommand.Count)
+            {
+                getdefalut = DefaultCommand[i - 1];
+                for (int j = 0; j < 7; ++j)
+                {
+                    obj.elements[j].elementnumber = j;
+                    obj.elements[j].type = getdefalut.types[j];
+                    obj.elements[j].mine = getdefalut.mines[j];
+                    obj.elements[j].level = getdefalut.levels[j];
+                }
+                obj.allin = getdefalut.allin;
+                obj.commandname = getdefalut.commandname;
+                obj.speed = getdefalut.speed;
+                obj.canturn = getdefalut.canturn;
+                obj.beforeturn = getdefalut.beforeturn;
+                obj.objectbool = getdefalut.objectbool;
+            }
+            CommandList.Add(obj);
+            DefaultList.Add(obj);
         }
     }
 
@@ -71,7 +102,7 @@ public class MainRule : MonoBehaviour
                     obj.gameObject.GetComponent<Toggle>().isOn = obj.objectbool;
                     obj.transform.Find("Button").transform.Find("Text").GetComponent<Text>().text= obj.commandname;
                 }
-                CommandList.Add(obj);
+                CommandList[i-1]=obj;
             }
         }
     }
