@@ -82,6 +82,7 @@ public class Drow : MonoBehaviour
             cards.Add(card);
         }
         hand += j;
+        Layout(mylayout);
     }
     [SerializeField] Text typetext;
     List<string> texts = new List<string> { "High card" , "One pair" , "One pair mark" , "Two pair" , "Three of a kind" , "High card flush" , "One pair flush" , "Straight" , "Two pair twin" , "Two pair mark",
@@ -383,5 +384,13 @@ public class Drow : MonoBehaviour
             }
         }
         typetext.text = texts[power];
+    }
+    [SerializeField] GridLayoutGroup mylayout;
+    [SerializeField] GridLayoutGroup enemylayout;
+
+    public void Layout(GridLayoutGroup layout)
+    {
+        int vec = (int)((700 - (cards.Count * 50)) / (cards.Count + 1)*0.6);
+        layout.spacing = new Vector2(vec,0);
     }
 }

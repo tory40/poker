@@ -18,6 +18,9 @@ public class RuleInit : MonoBehaviour
     public int endbattle = 99;
     public List<PokerType> types;
     [SerializeField] MainRule serectrule;
+    public float time = 10;
+    public float addtime = 60;
+    public int fight = 5;
 
     // Start is called before the first frame update
     private void Awake()
@@ -42,6 +45,9 @@ public class RuleInit : MonoBehaviour
         winscore = serectrule.winscore;
         endbattle = serectrule.endbattle;
         types = serectrule.types;
+        time = serectrule.time;
+        addtime = serectrule.addtime;
+        fight = serectrule.fight;
     }
     public void Default()
     {
@@ -56,5 +62,8 @@ public class RuleInit : MonoBehaviour
         winscore = 999999;
         endbattle = 99;
         types = serectrule.defaulttypes;
+        time = 10;
+        addtime = 60;
+        fight = 5;
     }
 }

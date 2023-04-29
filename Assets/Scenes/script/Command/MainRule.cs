@@ -19,12 +19,16 @@ public class MainRule : MonoBehaviour
     public bool winbool=true;
     public int winscore=999999;
     public int endbattle=99;
+    public float time = 10;
+    public float addtime = 60;
+    public int fight = 5;
     public List<PokerType> types = new List<PokerType>();
     public List<PokerType> defaulttypes = new List<PokerType>();
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("aaaaa");
         //ƒfƒtƒHƒ‹ƒg‚Ìƒf[ƒ^‚ğ“Ç‚İ‚Ş
         for (int i = 0; i < 27; ++i)
         {
@@ -354,6 +358,50 @@ public class MainRule : MonoBehaviour
         {
             Debug.Log("”¼Šp”š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
             endbattleinput.text = endbattle.ToString();
+        }
+    }
+    [SerializeField] InputField timeinput;
+    [SerializeField] InputField addtimeinput;
+    [SerializeField] InputField fightinput;
+
+    public void ChangeTime()
+    {
+        try
+        {
+            time = float.Parse(timeinput.text);
+            timeinput.text = time.ToString();
+        }
+        catch
+        {
+            Debug.Log("”¼Šp”š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+            timeinput.text = time.ToString();
+        }
+    }
+    public void ChangeAddTime()
+    {
+        try
+        {
+            addtime = float.Parse(addtimeinput.text);
+            addtimeinput.text = addtime.ToString();
+        }
+        catch
+        {
+            Debug.Log("”¼Šp”š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+            addtimeinput.text = addtime.ToString();
+        }
+    }
+
+    public void ChangeFight()
+    {
+        try
+        {
+            fight = (int)(float.Parse(fightinput.text));
+            fightinput.text = fight.ToString();
+        }
+        catch
+        {
+            Debug.Log("”¼Šp”š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+            fightinput.text = fight.ToString();
         }
     }
     public void ChangeWinbool()

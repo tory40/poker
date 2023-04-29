@@ -15,6 +15,8 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     public int joinroom;
     public bool quit =false;
     public bool roomhost=false;
+    [SerializeField] GameObject panel;
+    [SerializeField] GameObject panel2;
     public void Click(int type)
     {
         typenum = type;
@@ -42,6 +44,9 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 break;
             //ÉWÉáÉCÉìÉãÅ[ÉÄ
             case 4:
+                panel.SetActive(true);
+                panel2.SetActive(false);
+                text.text = input.text.ToString();
                 PhotonNetwork.JoinRoom(input.text);
                 break;
             default:
@@ -130,7 +135,8 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     [SerializeField] RuleInit ruleinit;
     public void SharePro()
     {
-        photonView.RPC(nameof(ShareInit), RpcTarget.Others,ruleinit.startpoint,ruleinit.betpoint,ruleinit.winmine,ruleinit.losemine,ruleinit.winenemy,ruleinit.loseenemy,ruleinit.winbool.ToString(),ruleinit.winscore,ruleinit.endbattle);
+
+        photonView.RPC(nameof(ShareInit), RpcTarget.Others,ruleinit.startpoint,ruleinit.betpoint,ruleinit.winmine,ruleinit.losemine,ruleinit.winenemy,ruleinit.loseenemy,ruleinit.winbool.ToString(),ruleinit.winscore,ruleinit.endbattle, ruleinit.time, ruleinit.addtime, ruleinit.fight);
         for(int i=0;i<27;++i)
         {
             photonView.RPC(nameof(ShareRist1), RpcTarget.Others,ruleinit.types[i].strong,i);
@@ -140,13 +146,13 @@ public class PhotonSet : MonoBehaviourPunCallbacks
             photonView.RPC(nameof(ShareRist2), RpcTarget.Others,i,ruleinit.CommandList[i].allin,ruleinit.CommandList[i].commandname,ruleinit.CommandList[i].speed,ruleinit.CommandList[i].canturn,ruleinit.CommandList[i].beforeturn.ToString(),ruleinit.CommandList[i].objectbool.ToString());
             for(int j = 0; j < 7; ++j)
             {
-                photonView.RPC(nameof(ShareRist2), RpcTarget.Others, i, j,ruleinit.CommandList[i].elements[j].type,ruleinit.CommandList[i].elements[j].mine.ToString(),ruleinit.CommandList[i].elements[j].level);
+                photonView.RPC(nameof(ShareRist3), RpcTarget.Others, i, j,ruleinit.CommandList[i].elements[j].type,ruleinit.CommandList[i].elements[j].mine.ToString(),ruleinit.CommandList[i].elements[j].level);
             }
         }
         photonView.RPC(nameof(JumpScene), RpcTarget.All);
     }
     [PunRPC]
-    public void ShareInit(int startPoint, int betPoint, float winMine, float loseMine, float winEnemy, float loseEnemy, string winBool, int winScore, int endBattle)
+    public void ShareInit(int startPoint, int betPoint, float winMine, float loseMine, float winEnemy, float loseEnemy, string winBool, int winScore, int endBattle,float tIme,float addTime,int fIght)
     {
         ruleinit.startpoint = startPoint;
         ruleinit.betpoint = betPoint;
@@ -157,6 +163,9 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         ruleinit.winbool = Convert.ToBoolean(winBool);
         ruleinit.winscore = winScore;
         ruleinit.endbattle = endBattle;
+        ruleinit.time = tIme;
+        ruleinit.addtime = addTime;
+        ruleinit.fight = fIght;
     }
     [PunRPC]
     public void ShareRist1(float typestrong,int i)
