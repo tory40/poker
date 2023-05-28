@@ -300,6 +300,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Types
       objectReference: {fileID: 0}
+    - target: {fileID: 8919759597361482262, guid: 5c0f0ab4a2409d04ea59d13bd5734e7e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c0f0ab4a2409d04ea59d13bd5734e7e, type: 3}
 --- !u!224 &254526218 stripped
@@ -903,6 +907,8 @@ MonoBehaviour:
   mybettext: {fileID: 0}
   enemypointtext: {fileID: 0}
   enemybettext: {fileID: 0}
+  typesample: {fileID: 0}
+  typeplace: {fileID: 0}
 --- !u!1 &857792714
 GameObject:
   m_ObjectHideFlags: 0

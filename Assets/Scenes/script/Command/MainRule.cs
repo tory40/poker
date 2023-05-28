@@ -423,7 +423,18 @@ public class MainRule : MonoBehaviour
         try
         {
             types[input].strong = float.Parse(inputstrong[input].text);
+        }
+        catch
+        {
+            Debug.Log("”¼Šp”š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
             inputstrong[input].text = types[input].strong.ToString();
+        }
+    }
+    public void ChangeStrongEnter(int input)
+    {
+        try
+        {
+            inputstrong[input].text = types[input].strong.ToString("0.00");
         }
         catch
         {

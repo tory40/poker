@@ -16,6 +16,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     int mybet;
     int enemypoint;
     int enemybet;
+    [SerializeField] Typejudge typesample;
+    [SerializeField] Transform typeplace;
+    List<PokerType> types;
+    List<Typejudge> typestrongs = new List<Typejudge>();
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +28,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         mypointtext.text = mypoint.ToString();
         enemypoint = mainrule.startpoint;
         mypointtext.text = enemypoint.ToString();
+        types = mainrule.types;
+        types.Sort((a,b)=>(int)((b.strong-a.strong)*10000));
+        for (int i=0;i<26;++i)
+        {
+            Typejudge judge = Instantiate(typesample, typeplace, false);
+            judge.White();
+            typestrongs.Add(judge);
+        }
     }
 
     // Update is called once per frame
