@@ -170,11 +170,21 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ShareRist1(float typestrong,int i)
     {
+        if(ruleinit.types.Count<=i)
+        {
+            PokerType aaa = new PokerType();
+            ruleinit.types.Add(aaa);
+        }
         ruleinit.types[i].strong = typestrong;
     }
     [PunRPC]
     public void ShareRist2(int i,int allIn, string commandName, int sPeed, int canTurn, string beforeTurn, string objectBool)
     {
+        if (ruleinit.types.Count <= i)
+        {
+            CommandObject aaa = new CommandObject();
+            ruleinit.CommandList.Add(aaa);
+        }
         ruleinit.CommandList[i].allin = allIn;
         ruleinit.CommandList[i].commandname = commandName;
         ruleinit.CommandList[i].speed = sPeed;
@@ -185,6 +195,11 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ShareRist3(int i,int j, string tYpe, string mIne, float lEvel)
     {
+        if (ruleinit.CommandList[i].elements.Count <= j)
+        {
+            CommandElement aaa = new CommandElement();
+            ruleinit.CommandList[i].elements.Add(aaa);
+        }
         ruleinit.CommandList[i].elements[j].type = tYpe;
         ruleinit.CommandList[i].elements[j].mine = Convert.ToBoolean(mIne);
         ruleinit.CommandList[i].elements[j].level = lEvel;
