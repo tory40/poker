@@ -20,4 +20,5 @@ public class Typejudge : MonoBehaviour
         blue.enabled = false;
         red.enabled = false;
     }
+
 }

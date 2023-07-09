@@ -9,12 +9,12 @@ public class PhotonSet : MonoBehaviourPunCallbacks
 {
     [SerializeField] InputField input;
     [SerializeField] Text text;
-    bool maxPlayer =false;
+    bool maxPlayer = false;
     bool joinRoom = false;
     int typenum;
     public int joinroom;
-    public bool quit =false;
-    public bool roomhost=false;
+    public bool quit = false;
+    public bool roomhost = false;
     [SerializeField] GameObject panel;
     [SerializeField] GameObject panel2;
     public void Click(int type)
@@ -28,11 +28,11 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 break;
             //ルームオリジナル
             case 2:
-                int i =UnityEngine.Random.Range(10000, 99999);
+                int i = UnityEngine.Random.Range(10000, 99999);
                 text.text = i.ToString();
                 var roomOptions1 = new RoomOptions();
                 roomOptions1.MaxPlayers = 2;
-                PhotonNetwork.CreateRoom(i.ToString(),roomOptions1);
+                PhotonNetwork.CreateRoom(i.ToString(), roomOptions1);
                 break;
             //ルームデフォルト
             case 3:
@@ -40,7 +40,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 text.text = j.ToString();
                 var roomOptions2 = new RoomOptions();
                 roomOptions2.MaxPlayers = 2;
-                PhotonNetwork.CreateRoom(j.ToString(),roomOptions2);
+                PhotonNetwork.CreateRoom(j.ToString(), roomOptions2);
                 break;
             //ジョインルーム
             case 4:
@@ -55,13 +55,13 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
-        if (!maxPlayer&&joinRoom) 
+        if (!maxPlayer && joinRoom)
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 maxPlayer = true;
-                if(typenum==1)
+                if (typenum == 1)
                 {
                     GameObject.Find("Rule").GetComponent<RuleInit>().Default();
                     JumpScene();
@@ -70,6 +70,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 {
                     if (roomhost)
                     {
+                        photonView.RPC(nameof(TypeDf), RpcTarget.Others);
                         GameObject.Find("Rule").GetComponent<RuleInit>().Default();
                         SharePro();
                     }
@@ -77,8 +78,9 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 }
                 if (typenum == 2)
                 {
-                    if(roomhost)
+                    if (roomhost)
                     {
+                        photonView.RPC(nameof(TypeDf), RpcTarget.Others);
                         GameObject.Find("Rule").GetComponent<RuleInit>().Change();
                         SharePro();
                     }
@@ -104,7 +106,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        if(typenum==2)
+        if (typenum == 2)
         {
             Click(2);
         }
@@ -119,7 +121,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
-        if(!quit)
+        if (!quit)
         {
             PhotonNetwork.ConnectUsingSettings();
         }
@@ -136,23 +138,23 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     public void SharePro()
     {
 
-        photonView.RPC(nameof(ShareInit), RpcTarget.Others,ruleinit.startpoint,ruleinit.betpoint,ruleinit.winmine,ruleinit.losemine,ruleinit.winenemy,ruleinit.loseenemy,ruleinit.winbool.ToString(),ruleinit.winscore,ruleinit.endbattle, ruleinit.time, ruleinit.addtime, ruleinit.fight);
-        for(int i=0;i<27;++i)
+        photonView.RPC(nameof(ShareInit), RpcTarget.Others, ruleinit.startpoint, ruleinit.betpoint, ruleinit.winmine, ruleinit.losemine, ruleinit.winenemy, ruleinit.loseenemy, ruleinit.winbool.ToString(), ruleinit.winscore, ruleinit.endbattle, ruleinit.time, ruleinit.addtime, ruleinit.fight);
+        for (int i = 0; i < 27; ++i)
         {
-            photonView.RPC(nameof(ShareRist1), RpcTarget.Others,ruleinit.types[i].strong,i);
+            photonView.RPC(nameof(ShareRist1), RpcTarget.Others, ruleinit.types[i].strong, i);
         }
         for (int i = 0; i < 30; ++i)
         {
-            photonView.RPC(nameof(ShareRist2), RpcTarget.Others,i,ruleinit.CommandList[i].allin,ruleinit.CommandList[i].commandname,ruleinit.CommandList[i].speed,ruleinit.CommandList[i].canturn,ruleinit.CommandList[i].beforeturn.ToString(),ruleinit.CommandList[i].objectbool.ToString());
-            for(int j = 0; j < 7; ++j)
+            photonView.RPC(nameof(ShareRist2), RpcTarget.Others, i, ruleinit.CommandList[i].allin, ruleinit.CommandList[i].commandname, ruleinit.CommandList[i].speed, ruleinit.CommandList[i].canturn, ruleinit.CommandList[i].beforeturn.ToString(), ruleinit.CommandList[i].objectbool.ToString());
+            for (int j = 0; j < 7; ++j)
             {
-                photonView.RPC(nameof(ShareRist3), RpcTarget.Others, i, j,ruleinit.CommandList[i].elements[j].type,ruleinit.CommandList[i].elements[j].mine.ToString(),ruleinit.CommandList[i].elements[j].level);
+                photonView.RPC(nameof(ShareRist3), RpcTarget.Others, i, j, ruleinit.CommandList[i].elements[j].type, ruleinit.CommandList[i].elements[j].mine.ToString(), ruleinit.CommandList[i].elements[j].level);
             }
         }
         photonView.RPC(nameof(JumpScene), RpcTarget.All);
     }
     [PunRPC]
-    public void ShareInit(int startPoint, int betPoint, float winMine, float loseMine, float winEnemy, float loseEnemy, string winBool, int winScore, int endBattle,float tIme,float addTime,int fIght)
+    public void ShareInit(int startPoint, int betPoint, float winMine, float loseMine, float winEnemy, float loseEnemy, string winBool, int winScore, int endBattle, float tIme, float addTime, int fIght)
     {
         ruleinit.startpoint = startPoint;
         ruleinit.betpoint = betPoint;
@@ -168,9 +170,9 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         ruleinit.fight = fIght;
     }
     [PunRPC]
-    public void ShareRist1(float typestrong,int i)
+    public void ShareRist1(float typestrong, int i)
     {
-        if(ruleinit.types.Count<=i)
+        if (ruleinit.types.Count <= i)
         {
             PokerType aaa = new PokerType();
             ruleinit.types.Add(aaa);
@@ -178,7 +180,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         ruleinit.types[i].strong = typestrong;
     }
     [PunRPC]
-    public void ShareRist2(int i,int allIn, string commandName, int sPeed, int canTurn, string beforeTurn, string objectBool)
+    public void ShareRist2(int i, int allIn, string commandName, int sPeed, int canTurn, string beforeTurn, string objectBool)
     {
         if (ruleinit.types.Count <= i)
         {
@@ -193,7 +195,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         ruleinit.CommandList[i].objectbool = Convert.ToBoolean(objectBool);
     }
     [PunRPC]
-    public void ShareRist3(int i,int j, string tYpe, string mIne, float lEvel)
+    public void ShareRist3(int i, int j, string tYpe, string mIne, float lEvel)
     {
         if (ruleinit.CommandList[i].elements.Count <= j)
         {
@@ -209,5 +211,10 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     public void JumpScene()
     {
         SceneManager.LoadScene("SampleScene");
+    }
+    [PunRPC]
+    public void TypeDf()
+    {
+        GameObject.Find("Rule").GetComponent<RuleInit>().Default();
     }
 }

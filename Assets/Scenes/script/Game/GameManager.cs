@@ -27,13 +27,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         mypoint = mainrule.startpoint;
         mypointtext.text = mypoint.ToString();
         enemypoint = mainrule.startpoint;
-        mypointtext.text = enemypoint.ToString();
+        enemypointtext.text = enemypoint.ToString();
         types = mainrule.types;
         types.Sort((a,b)=>(int)((b.strong-a.strong)*10000));
         for (int i=0;i<26;++i)
         {
             Typejudge judge = Instantiate(typesample, typeplace, false);
             judge.White();
+            judge.transform.Find("Typetext").GetComponent<Text>().text=types[i].type;
             typestrongs.Add(judge);
         }
     }
