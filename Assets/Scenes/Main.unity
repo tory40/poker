@@ -2957,7 +2957,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &246584043
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13387,8 +13387,6 @@ MonoBehaviour:
   time: 10
   addtime: 60
   fight: 5
-  types: []
-  defaulttypes: []
   startinput: {fileID: 1855560087}
   betinput: {fileID: 1408080854}
   winmineinput: {fileID: 961393835}
@@ -14794,7 +14792,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1054808258
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18683,7 +18681,6 @@ MonoBehaviour:
   winbool: 1
   winscore: 999999
   endbattle: 99
-  types: []
   serectrule: {fileID: 971525115}
   time: 10
   addtime: 60

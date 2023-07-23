@@ -45,6 +45,7 @@ MonoBehaviour:
   - ShareRist3
   - JumpScene
   - TypeDf
+  - EnemyGame
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

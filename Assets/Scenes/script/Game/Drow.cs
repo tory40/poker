@@ -18,8 +18,7 @@ public class Drow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCard();
-        Check();
+        
     }
 
     // Update is called once per frame
@@ -27,8 +26,7 @@ public class Drow : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            StartCard();
-            Check();
+
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -50,7 +48,7 @@ public class Drow : MonoBehaviour
         discard = i;
     }
 
-    void StartCard() 
+    public void StartCard(int card1,int card2,int card3,int card4,int card5) 
     {
         deck.Clear();
         hand = 0;
@@ -59,37 +57,40 @@ public class Drow : MonoBehaviour
             Destroy(card.gameObject);
         }
         cards.Clear();
-        Drowcard(5);
+        Drowcard(card1);
+        Drowcard(card2);
+        Drowcard(card3);
+        Drowcard(card4);
+        Drowcard(card5);
+        SortCard();
     }
     void Drowcard(int j)
     {
-        for (int i = 0; i < j; ++i)
-        {
-            cardID = Random.Range(0, 52);
-            deck.Add(cardID);
-            Debug.Log(cardID);
-        }
+        deck.Add(j);
+        Debug.Log(j);
+    }
+    void SortCard()
+    {
         deck.Sort();
         foreach (CardController card in cards)
         {
             Destroy(card.gameObject);
         }
         cards.Clear();
-        for (int i = 0; i < hand+j; ++i)
+        for (int i = 0; i < deck.Count; ++i)
         {
             CardController card = Instantiate(cardPrefab, field, false);
-            card.Init(deck[i],i);
+            card.Init(deck[i], i);
             cards.Add(card);
         }
-        hand += j;
-        Layout(mylayout);
+        Layout(layout);
     }
     [SerializeField] Text typetext;
     List<string> texts = new List<string> { "High card" , "One pair" , "One pair mark" , "Two pair" , "Three of a kind" , "High card flush" , "One pair flush" , "Straight" , "Two pair twin" , "Two pair mark",
         "Three of a kind mark" ,"Full house","Full house duo","Full house torio","Two pair flush","Three of a kind flush","Four of a kind","Four of a kind half","Four of a kind rainbow","Five of a kind",
     "Straight flush","Full house mark","Full house flush","Four of a kind mark","Four of a kind flush","Five of a kind half","Five of a kind flush"};
     int power=0;
-    void Check()
+   public  void Check()
     {
         power = -1;
         numbers.Clear();
@@ -385,8 +386,7 @@ public class Drow : MonoBehaviour
         }
         typetext.text = texts[power];
     }
-    [SerializeField] GridLayoutGroup mylayout;
-    [SerializeField] GridLayoutGroup enemylayout;
+    [SerializeField] GridLayoutGroup layout;
 
     public void Layout(GridLayoutGroup layout)
     {
