@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
+using ExitGames.Client.Photon;
 
 public class PhotonSet : MonoBehaviourPunCallbacks
 {
@@ -44,6 +45,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 break;
             //ÉWÉáÉCÉìÉãÅ[ÉÄ
             case 4:
+                GameObject.Find("Rule").GetComponent<RuleInit>().Default();
                 panel.SetActive(true);
                 panel2.SetActive(false);
                 text.text = input.text.ToString();
@@ -118,6 +120,11 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         joinRoom = true;
+
+        var hashtable = new ExitGames.Client.Photon.Hashtable();
+        hashtable["Score"] = 0;
+        hashtable["Message"] = "Ç±ÇÒÇ…ÇøÇÕ";
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hashtable);
     }
     public override void OnDisconnected(DisconnectCause cause)
     {

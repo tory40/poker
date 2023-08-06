@@ -28,7 +28,6 @@ public class MainRule : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("aaaaa");
         //デフォルトのデータを読み込む
         for (int i = 0; i < 27; ++i)
         {

@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ExitGames.Client.Photon;
+
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -22,7 +24,22 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform typeplace;
     List<PokerType> types;
     List<Typejudge> typestrongs = new List<Typejudge>();
-
+    [SerializeField] Text endbattletext;
+    [SerializeField] Text fighttext;
+    [SerializeField] Text nowbattletext;
+    [SerializeField] Text nowturntext;
+    int endbattle;
+    int fight;
+    int nowbattle=0;
+    int nowturn;
+    [SerializeField] Text addtimetext;
+    [SerializeField] Text oncetimetext;
+    float addtime;
+    float oncetime;
+    float counttime;
+    [SerializeField] Transform commandtrans;
+    [SerializeField] CommandInit commandprefab;
+    List<CommandInit> commandlist = new List<CommandInit>();
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +48,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         enemypoint = mainrule.startpoint;
         enemypointtext.text = enemypoint.ToString();
         types = mainrule.types;
+        endbattle = mainrule.endbattle;
+        endbattletext.text = endbattle.ToString();
+        fight = mainrule.fight;
+        fighttext.text = fight.ToString();
         types.Sort((a,b)=>(int)((b.strong-a.strong)*10000));
+        addtime = mainrule.addtime;
+        addtimetext.text = addtime.ToString();
+        oncetime = mainrule.time;
+        oncetimetext.text = oncetime.ToString();
         for (int i=0;i<27;++i)
         {
             Typejudge judge = Instantiate(typesample, typeplace, false);
@@ -39,7 +64,30 @@ public class GameManager : MonoBehaviourPunCallbacks
             judge.transform.Find("Typetext").GetComponent<Text>().text=types[i].type;
             typestrongs.Add(judge);
         }
-        Game();
+
+        for(int i = 0; i < 30; ++i)
+        {
+            CommandInit command = Instantiate(commandprefab, commandtrans, false);
+            command.allin = mainrule.CommandList[i].allin;
+            command.commandname = mainrule.CommandList[i].commandname;
+            command.speed = mainrule.CommandList[i].speed;
+            command.objectnumber = mainrule.CommandList[i].objectnumber;
+            command.canturn = mainrule.CommandList[i].canturn;
+            command.beforeturn = mainrule.CommandList[i].beforeturn;
+            command.objectbool = mainrule.CommandList[i].objectbool;
+            for(int j = 0; j < 7; ++j)
+            {
+                command.types.Add (mainrule.CommandList[i].elements[j].type);
+                command.mines.Add(mainrule.CommandList[i].elements[j].mine);
+                command.levels.Add(mainrule.CommandList[i].elements[j].level);
+            }
+            command.Rename(command.commandname);
+            commandlist.Add(command);
+         }
+        var hashtable = new ExitGames.Client.Photon.Hashtable();
+        hashtable["Score"] = 1;
+        hashtable["Message"] = "こんにちは";
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hashtable);
     }
 
     // Update is called once per frame
@@ -47,8 +95,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         
     }
+    [PunRPC]
     public void Game()
     {
+        ++nowbattle;
+        nowbattletext.text = nowbattle.ToString();
+        nowturn = 1;
+        nowturntext.text = nowturn.ToString();
         int card1=  Random.Range(0, 52);
         int card2 = Random.Range(0, 52);
         int card3 = Random.Range(0, 52);
@@ -62,5 +115,46 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void EnemyGame(int card1,int card2,int card3,int card4,int card5)
     {
         enemydrow.StartCard(card1, card2, card3, card4, card5);
+    }
+    int count;
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        // カスタムプロパティが更新されたプレイヤーのプレイヤー名とIDをコンソールに出力する
+        Debug.Log($"{targetPlayer.NickName}({targetPlayer.ActorNumber})");
+
+        
+
+        // 更新されたプレイヤーのカスタムプロパティのペアをコンソールに出力する
+        foreach (var prop in changedProps)
+        {
+            Debug.Log($"{prop.Key}: {prop.Value}");
+            if (prop.Key.ToString() == "Score")
+            {
+                if((int)prop.Value == 1)
+                {
+                    count++;
+                    Debug.Log(count);
+                }
+            }
+        }
+        if (count == 2)
+        {
+            Game();
+            photonView.RPC(nameof(Game), RpcTarget.Others);
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        // 更新されたルームのカスタムプロパティのペアをコンソールに出力する
+        foreach (var prop in propertiesThatChanged)
+        {
+            Debug.Log($"{prop.Key}: {prop.Value}");
+        }
+    }
+    public void Endbattle()
+    {
+        //終了か確認
+        Game();
     }
 }
