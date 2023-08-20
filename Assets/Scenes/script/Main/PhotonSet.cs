@@ -45,9 +45,9 @@ public class PhotonSet : MonoBehaviourPunCallbacks
                 break;
             //ƒWƒ‡ƒCƒ“ƒ‹[ƒ€
             case 4:
-                GameObject.Find("Rule").GetComponent<RuleInit>().Default();
                 panel.SetActive(true);
                 panel2.SetActive(false);
+                GameObject.Find("Rule").GetComponent<RuleInit>().Default();
                 text.text = input.text.ToString();
                 PhotonNetwork.JoinRoom(input.text);
                 break;
