@@ -18,6 +18,8 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     public bool roomhost = false;
     [SerializeField] GameObject panel;
     [SerializeField] GameObject panel2;
+    [SerializeField] CommandObject commandoprafab;
+    [SerializeField] CommandElement elementoprafab;
     public void Click(int type)
     {
         typenum = type;
@@ -189,11 +191,10 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ShareRist2(int i, int allIn, string commandName, int sPeed, int canTurn, string beforeTurn, string objectBool)
     {
-        if (ruleinit.types.Count <= i)
-        {
-            CommandObject aaa = new CommandObject();
-            ruleinit.CommandList.Add(aaa);
-        }
+        
+        CommandObject aaa = Instantiate(commandoprafab);
+        ruleinit.CommandList[i] = aaa;
+
         ruleinit.CommandList[i].allin = allIn;
         ruleinit.CommandList[i].commandname = commandName;
         ruleinit.CommandList[i].speed = sPeed;
