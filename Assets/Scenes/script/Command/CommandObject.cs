@@ -26,8 +26,12 @@ public class CommandObject : MonoBehaviour
         }
         for (int i = 1; i <= 7; ++i)
         {
-            Transform trans = GameObject.Find("Position(" + i.ToString() + ")").GetComponent<Transform>();
-            transforms.Add(trans);
+            GameObject tmp = GameObject.Find("Position(" + i.ToString() + ")");
+            if (tmp)
+            {
+                Transform trans = tmp.GetComponent<Transform>();
+                transforms.Add(trans);
+            }
         }
     }
 

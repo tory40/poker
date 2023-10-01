@@ -19,16 +19,20 @@ public class CommandInit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void Rename(string rename)
     {
         named.text = rename;
     }
+    public void Click()
+        {
+           GameObject.Find("Init").GetComponent<InitController>().Clickbutton(this);
+        }
 }

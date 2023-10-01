@@ -5999,6 +5999,7 @@ MonoBehaviour:
   commandoprafab: {fileID: 8406479497151357209, guid: b15c10b3085726c44b2947e8403096ba, type: 3}
   elementoprafab: {fileID: 0}
   ruleinit: {fileID: 1362005524}
+  elementprefabs: {fileID: 33759441327361268, guid: c35365ce58354804aa3f711bb80f55c9, type: 3}
 --- !u!114 &443794239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24894,6 +24895,42 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: "\u516C\u958B\u4E2D\u3000\u30EB\u30FC\u30E0ID"
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1648987833}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 783227882}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 971525115}
+        m_TargetAssemblyTypeName: MainRule, Assembly-CSharp
+        m_MethodName: CommandGet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1846987409
 MonoBehaviour:

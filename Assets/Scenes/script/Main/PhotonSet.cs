@@ -188,6 +188,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         }
         ruleinit.types[i].strong = typestrong;
     }
+    [SerializeField] CommandElement elementprefabs;
     [PunRPC]
     public void ShareRist2(int i, int allIn, string commandName, int sPeed, int canTurn, string beforeTurn, string objectBool)
     {
@@ -205,11 +206,9 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ShareRist3(int i, int j, string tYpe, string mIne, float lEvel)
     {
-        if (ruleinit.CommandList[i].elements.Count <= j)
-        {
-            CommandElement aaa = new CommandElement();
-            ruleinit.CommandList[i].elements.Add(aaa);
-        }
+        CommandElement aaa = Instantiate(elementprefabs);
+        ruleinit.CommandList[i].elements.Add(aaa);
+
         ruleinit.CommandList[i].elements[j].type = tYpe;
         ruleinit.CommandList[i].elements[j].mine = Convert.ToBoolean(mIne);
         ruleinit.CommandList[i].elements[j].level = lEvel;
