@@ -34,5 +34,6 @@ public class CommandInit : MonoBehaviour
     public void Click()
         {
            GameObject.Find("Init").GetComponent<InitController>().Clickbutton(this);
+           GameObject.Find("Init").transform.Find("Act").gameObject.SetActive(true);
         }
 }

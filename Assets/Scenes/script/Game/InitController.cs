@@ -9,6 +9,7 @@ public class InitController : MonoBehaviour
     [SerializeField] Text speed;
     [SerializeField] Text canaction;
     CommandInit holdcommand;
+    [SerializeField] GameManager gamemanager;
     // Start is called before the first frame update
     void Start()
     {
@@ -95,5 +96,10 @@ public class InitController : MonoBehaviour
             }
 
         }
+    }
+    public void Click()
+    {
+        gamemanager.countdown = false;
+        gamemanager.ChoiceCommand(holdcommand);
     }
 }

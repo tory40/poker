@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform commandtrans;
     [SerializeField] CommandInit commandprefab;
     List<CommandInit> commandlist = new List<CommandInit>();
+    public bool countdown =false;
     // Start is called before the first frame update
     void Start()
     {
@@ -83,17 +84,46 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             command.Rename(command.commandname);
             commandlist.Add(command);
+            if (!command.objectbool)
+            {
+                command.gameObject.SetActive(false);
+            }
          }
         var hashtable = new ExitGames.Client.Photon.Hashtable();
         hashtable["Score"] = 1;
         hashtable["Message"] = "こんにちは";
         PhotonNetwork.LocalPlayer.SetCustomProperties(hashtable);
+        Countdownstart();
     }
-
+    public void Countdownstart()
+    {
+        oncetime = mainrule.time;
+        countdown = true;
+    }
     // Update is called once per frame
     void Update()
     {
-        
+        if(countdown)
+        {
+            if(oncetime>0)
+            {
+                oncetime -= Time.deltaTime;
+                if(oncetime < 0)
+                {
+                    oncetime = 0;
+                }
+                oncetimetext.text = oncetime.ToString("0.00");
+            }
+            else
+            {
+                addtime -= Time.deltaTime;
+                addtimetext.text = addtime.ToString("0.00");
+                if(addtime<0)
+                {
+                    //タイムアウト1
+                }
+            }
+        }
     }
     [PunRPC]
     public void Game()
@@ -156,5 +186,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         //終了か確認
         Game();
+    }
+    public void ChoiceCommand(CommandInit command)
+    {
+
     }
 }
