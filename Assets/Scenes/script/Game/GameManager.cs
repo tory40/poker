@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             command.canturn = mainrule.CommandList[i].canturn;
             command.beforeturn = mainrule.CommandList[i].beforeturn;
             command.objectbool = mainrule.CommandList[i].objectbool;
+            command.createnumber = i;
             for(int j = 0; j < 7; ++j)
             {
                 command.types.Add (mainrule.CommandList[i].elements[j].type);
@@ -123,6 +124,12 @@ public class GameManager : MonoBehaviourPunCallbacks
                     //タイムアウト1
                 }
             }
+        }
+        if(mycommandchoice&&enemycommandchoice)
+        {
+            mycommandchoice = false;
+            enemycommandchoice = false;
+            CommandStart();
         }
     }
     [PunRPC]
@@ -187,8 +194,86 @@ public class GameManager : MonoBehaviourPunCallbacks
         //終了か確認
         Game();
     }
+    public CommandInit mycommand;
+    public CommandInit enemycommand;
+    [SerializeField] GameObject commandpanel;
+    public bool mycommandchoice=false;
+    public bool enemycommandchoice=false;
+    public float mylandom;
+    public float enemylandom;
     public void ChoiceCommand(CommandInit command)
     {
+        mycommand = command;
+        mylandom = Random.Range(0f, 1f);
+        photonView.RPC(nameof(SendCommand), RpcTarget.Others,command.createnumber,mylandom);
+        commandpanel.SetActive(false);
+        mycommandchoice = true;
+    }
+    [PunRPC]
+    public void SendCommand(int num,float landom)
+    {
+        enemylandom = landom;
+        enemycommand = commandlist[num];
+        enemycommand.actmine = false;
+        enemycommandchoice = true;
+    }
+    public List<int> actinit;
+    public void CommandStart()
+    {
+        if(mycommand.types[3] == "Fight")
+        {
+            mylandom += 1;
+        }
+        if (enemycommand.types[3] == "Fight")
+        {
+            enemylandom += 1;
+        }
+        if (mycommand.types[3] == "Fold")
+        {
+            mylandom -= 1;
+        }
+        if (enemycommand.types[3] == "Fold")
+        {
+            enemylandom -= 1;
+        }
+        if (mycommand.speed==enemycommand.speed)
+        {
+            //(同速)
+            if(mylandom<enemylandom)
+            {
+                actinit = new List<int> {0,1,2,7,8,9,3,10,4,5,6,11,12,13};
+            }
+            else
+            {
+                actinit = new List<int> {7,8,9,0,1,2,10,3,11,12,13,4,5,6};
+            }
+        }
+        else if(mycommand.speed > enemycommand.speed)
+        {
+            //(先行)
+            actinit = new List<int> {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
+        }
+        else
+        {
+            //(後攻)
+            actinit =new List<int> {7,8,9,10,11,12,13,0,1,2,3,4,5,6};
+        }
+        loop = 0;
+        LoopInit();
 
+    }
+    public int loop = 0;
+    public void LoopInit()
+    {
+        if (loop==14)
+        {
+            Countdownstart();
+        }
+        else
+        {
+            
+            ++loop;
+            LoopInit();
+        }
     }
 }

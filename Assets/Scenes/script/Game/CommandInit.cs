@@ -15,6 +15,8 @@ public class CommandInit : MonoBehaviour
     public List<string> types = new List<string>();
     public List<bool> mines = new List<bool>();
     public List<float> levels = new List<float>();
+    public int createnumber;
+    public bool actmine = true;
     [SerializeField] Text named;
     // Start is called before the first frame update
     void Start()
