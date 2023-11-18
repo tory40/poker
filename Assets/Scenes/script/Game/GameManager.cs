@@ -271,9 +271,69 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            
-            ++loop;
-            LoopInit();
+            OnceInit();
         }
     }
+    public void OnceInit()
+    {
+        if(actinit[loop]<7)
+        {
+            //Ž©•ª‚Ìˆ—
+            switch (mycommand.types[actinit[loop]])
+            {
+                case "FreeChange":
+                    FreeChange();
+                    break;
+                case "Draw":
+                    
+                    break;
+                case "Change":
+                    
+                    break;
+                case "Fold":
+                    
+                    break;
+                case "Cost":
+                    
+                    break;
+                case "Fight":
+                    
+                    break;
+                case "Open":
+                    
+                    break;
+                case "None":
+                    
+                    break;
+                default:
+                    return;
+            }
+        }
+    }
+    
+    public void EnemyDiscard(int i)
+    {
+        photonView.RPC(nameof(EnemyDiscard2), RpcTarget.Others, i);
+    }
+    [PunRPC]
+    public void EnemyDiscard2(int i)
+    {
+        enemydrow.deck.RemoveAt(i);
+        enemydrow.SortCard();
+    }
+    public void EnemyAddcard(int i)
+    {
+        photonView.RPC(nameof(EnemyAddcard2), RpcTarget.Others, i);
+    }
+    [PunRPC]
+    public void EnemyAddcard2(int i)
+    {
+        enemydrow.Drowcard(i);
+        enemydrow.SortCard();
+    }
+    public void FreeChange()
+    {
+        mydrow.FreeDisCard();
+    }
+    
 }

@@ -5,16 +5,21 @@ using UnityEngine.UI;
 
 public class Drow : MonoBehaviour
 {
+    [SerializeField] Text changetext;
+    [SerializeField] GameObject changetext2;
+    [SerializeField] GameObject changebutton;
     int discard;
-    bool candis=false;
+    bool free=false;
     [SerializeField] Transform field;
     [SerializeField] CardController cardPrefab;
-    List<int> deck = new List<int>();
+    public List<int> deck = new List<int>();
     List<int> numbers = new List<int>();
     List<int> marks = new List<int>();
     int cardID;
     List<CardController> cards = new List<CardController>();
     int hand = 0;
+    public List<int> disdeck = new List<int>();
+    public bool fastadd;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,21 +38,97 @@ public class Drow : MonoBehaviour
             Drowcard(2);
             DisCard(2);
         }
-        if(candis)
+    }
+    public void DisCard(int i)
+    {
+        disdeck.Clear();
+        changetext.gameObject.SetActive(true);
+        changetext.text = "écÇË"+i.ToString()+"ñá";
+        free = false;
+        discard = i;
+        for(int j=0;j<cards.Count;++j)
         {
+            cards[j].canchoice = true;
+        }
+        changetext.gameObject.SetActive(true);
+        changetext2.SetActive(true);
+    }
+    public void FreeDisCard()
+    {
+        fastadd = false;
+        disdeck.Clear();
+        changetext.gameObject.SetActive(true);
+        changetext.text = "êßå¿Ç»Çµ";
+        free = true;
+        discard = 0;
+        for (int j = 0; j < cards.Count; ++j)
+        {
+            cards[j].canchoice = true;
+        }
+        changetext2.SetActive(true);
+        changebutton.SetActive(true);
+    }
+    public void DiscardChoice(bool add)
+    {
+        if(!free)
+        {
+            if(discard == disdeck.Count)
+            {
+                changetext.gameObject.SetActive(false);
+                changebutton.SetActive(true);
+            }
+            else
+            {
+                changetext.gameObject.SetActive(true);
+                changebutton.SetActive(false);
+                changetext.text = "écÇË" + (discard-disdeck.Count).ToString() + "ñá";
+            }
 
         }
+        else
+        {
+            if (add)
+            {
+                discard += 1;
+            }
+            else
+            {
+                discard -= 1;
+            }
+        }
     }
-    static public void Click(int i)
+    [SerializeField] public Drow reverse;
+    public void DiscardInit()
     {
-
+        disdeck.Sort();
+        disdeck.Reverse();
+        for(int i=0;i<disdeck.Count;++i)
+        {
+            deck.RemoveAt(disdeck[i]);
+            GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyDiscard(disdeck[i]);
+        }
+        //ìGÇÃèàóùÇ‡í«â¡
+        SortCard();
+        if(!fastadd)
+        {
+            AddCard(discard);
+        }
     }
-    void DisCard(int i)
+    public void AddCard(int i)
     {
-        candis = true;
-        discard = i;
+        for(int j=0;j<i;++j)
+        {
+            int cardnumber = Random.Range(0, 52);
+            Drowcard(cardnumber);
+            GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyAddcard(cardnumber);
+        }
+        SortCard();
+        if(fastadd)
+        {
+            discard = i;
+            DisCard(i);
+        }
     }
-
     public void StartCard(int card1,int card2,int card3,int card4,int card5) 
     {
         deck.Clear();
@@ -64,12 +145,12 @@ public class Drow : MonoBehaviour
         Drowcard(card5);
         SortCard();
     }
-    void Drowcard(int j)
+    public void Drowcard(int j)
     {
         deck.Add(j);
         Debug.Log(j);
     }
-    void SortCard()
+    public void SortCard()
     {
         deck.Sort();
         foreach (CardController card in cards)
