@@ -52,6 +52,7 @@ public class Drow : MonoBehaviour
         }
         changetext.gameObject.SetActive(true);
         changetext2.SetActive(true);
+        GameObject.Find("Gamemaneger").GetComponent<GameManager>().Countdownstart();
     }
     public void FreeDisCard()
     {
@@ -67,10 +68,12 @@ public class Drow : MonoBehaviour
         }
         changetext2.SetActive(true);
         changebutton.SetActive(true);
+        GameObject.Find("Gamemaneger").GetComponent<GameManager>().Countdownstart();
     }
     public void DiscardChoice(bool add)
     {
-        if(!free)
+        GameObject.Find("Gamemaneger").GetComponent<GameManager>().countdown = false;
+        if (!free)
         {
             if(discard == disdeck.Count)
             {
@@ -108,10 +111,14 @@ public class Drow : MonoBehaviour
             GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyDiscard(disdeck[i]);
         }
         //ìGÇÃèàóùÇ‡í«â¡
-        SortCard();
+        SortCard(false);
         if(!fastadd)
         {
             AddCard(discard);
+        }
+        else
+        {
+            GameObject.Find("Gamemaneger").GetComponent<GameManager>().Next();
         }
     }
     public void AddCard(int i)
@@ -122,14 +129,18 @@ public class Drow : MonoBehaviour
             Drowcard(cardnumber);
             GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyAddcard(cardnumber);
         }
-        SortCard();
+        SortCard(false);
         if(fastadd)
         {
             discard = i;
             DisCard(i);
         }
+        else
+        {
+            GameObject.Find("Gamemaneger").GetComponent<GameManager>().Next();
+        }
     }
-    public void StartCard(int card1,int card2,int card3,int card4,int card5) 
+    public void StartCard(int card1,int card2,int card3,int card4,int card5,bool hide) 
     {
         deck.Clear();
         hand = 0;
@@ -143,14 +154,14 @@ public class Drow : MonoBehaviour
         Drowcard(card3);
         Drowcard(card4);
         Drowcard(card5);
-        SortCard();
+        SortCard(hide);
     }
     public void Drowcard(int j)
     {
         deck.Add(j);
         Debug.Log(j);
     }
-    public void SortCard()
+    public void SortCard(bool hide)
     {
         deck.Sort();
         foreach (CardController card in cards)
@@ -162,9 +173,29 @@ public class Drow : MonoBehaviour
         {
             CardController card = Instantiate(cardPrefab, field, false);
             card.Init(deck[i], i);
+            if(hide)
+            {
+                card.view.Hide();
+            }
             cards.Add(card);
         }
         Layout(layout);
+    }
+    public void OpenCard()
+    {
+        for(int i=0;i<5;++i)
+        {
+            cards[i].view.Open();
+        }
+    }
+    public void HideCard()
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            cards[i].view.Hide();
+        }
+        GameObject.Find("Gamemaneger").GetComponent<GameManager>().countdown = false;
+        GameObject.Find("Gamemaneger").GetComponent<GameManager>().Next();
     }
     [SerializeField] Text typetext;
     List<string> texts = new List<string> { "High card" , "One pair" , "One pair mark" , "Two pair" , "Three of a kind" , "High card flush" , "One pair flush" , "Straight" , "Two pair twin" , "Two pair mark",

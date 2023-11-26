@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardController : MonoBehaviour
 {
-    CardView view;// Œ©‚½–Ú‚Ì‘€ì
+    public CardView view;// Œ©‚½–Ú‚Ì‘€ì
     CardModel model;// ƒf[ƒ^‚Ì‘€ì
     public bool canchoice=false;
     public bool choice = false;

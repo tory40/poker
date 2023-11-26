@@ -9,9 +9,18 @@ public class CardView : MonoBehaviour
     [SerializeField] Image markimage;
     List<string> texts = new List<string> {"2","3","4","5","6","7","8","9","10","J","Q","K","A" };
     [SerializeField] Sprite[] markmodel;
+    [SerializeField] GameObject hide;
     public void Show(CardModel cardModel)
     {
         numbertext.text = texts[cardModel.number];
         markimage.sprite = markmodel[cardModel.marknum];
+    }
+    public void Open()
+    {
+        hide.SetActive(false);
+    }
+    public void Hide()
+    {
+        hide.SetActive(true);
     }
 }

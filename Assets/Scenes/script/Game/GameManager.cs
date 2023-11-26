@@ -135,6 +135,27 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Game()
     {
+        if(mypoint<=mainrule.betpoint)
+        {
+            allin = true;
+            mybet = mypoint;
+            mypoint = 0;
+        }
+        else
+        {
+            mybet = mainrule.betpoint;
+            mypoint -= mainrule.betpoint;
+        }
+        if (enemypoint <= mainrule.betpoint)
+        {
+            enemybet = enemypoint;
+            enemypoint = 0;
+        }
+        else
+        {
+            enemybet = mainrule.betpoint;
+            enemypoint -= mainrule.betpoint;
+        }
         ++nowbattle;
         nowbattletext.text = nowbattle.ToString();
         nowturn = 1;
@@ -144,14 +165,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         int card3 = Random.Range(0, 52);
         int card4 = Random.Range(0, 52);
         int card5 = Random.Range(0, 52);
-        mydrow.StartCard(card1,card2,card3,card4,card5);
+        mydrow.StartCard(card1,card2,card3,card4,card5,false);
         photonView.RPC(nameof(EnemyGame), RpcTarget.Others,card1,card2,card3,card4,card5);
         mydrow.Check();
     }
     [PunRPC]
     public void EnemyGame(int card1,int card2,int card3,int card4,int card5)
     {
-        enemydrow.StartCard(card1, card2, card3, card4, card5);
+        enemydrow.StartCard(card1, card2, card3, card4, card5,true);
     }
     int count;
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
@@ -263,6 +284,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     }
     public int loop = 0;
+    [PunRPC]
     public void LoopInit()
     {
         if (loop==14)
@@ -274,6 +296,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             OnceInit();
         }
     }
+    [SerializeField] GameObject hidebutton;
     public void OnceInit()
     {
         if(actinit[loop]<7)
@@ -282,19 +305,47 @@ public class GameManager : MonoBehaviourPunCallbacks
             switch (mycommand.types[actinit[loop]])
             {
                 case "FreeChange":
-                    FreeChange();
+                    if(mycommand.mines[actinit[loop]])
+                    {
+                        FreeChange();
+                    }
+                    else
+                    {
+                        photonView.RPC(nameof(FreeChange), RpcTarget.Others);
+                    }
                     break;
                 case "Draw":
-                    
+                    if (mycommand.mines[actinit[loop]])
+                    {
+                        Draw((int)mycommand.levels[actinit[loop]]);
+                    }
+                    else
+                    {
+                        photonView.RPC(nameof(Draw), RpcTarget.Others, (int)mycommand.levels[actinit[loop]]);
+                    }
                     break;
                 case "Change":
-                    
+                    if (mycommand.mines[actinit[loop]])
+                    {
+                        Change((int)mycommand.levels[actinit[loop]]);
+                    }
+                    else
+                    {
+                        photonView.RPC(nameof(Change), RpcTarget.Others, (int)mycommand.levels[actinit[loop]]);
+                    }
                     break;
                 case "Fold":
                     
                     break;
                 case "Cost":
-                    
+                    if (mycommand.mines[actinit[loop]])
+                    {
+                        Cost(mycommand.levels[actinit[loop]]);
+                    }
+                    else
+                    {
+                        photonView.RPC(nameof(Cost), RpcTarget.Others, mycommand.levels[actinit[loop]]);
+                    }
                     break;
                 case "Fight":
                     
@@ -303,12 +354,17 @@ public class GameManager : MonoBehaviourPunCallbacks
                     
                     break;
                 case "None":
-                    
+                    Next();
                     break;
                 default:
                     return;
             }
         }
+    }
+    public void Next()
+    {
+        LoopInit();
+        photonView.RPC(nameof(LoopInit), RpcTarget.Others);
     }
     
     public void EnemyDiscard(int i)
@@ -319,7 +375,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void EnemyDiscard2(int i)
     {
         enemydrow.deck.RemoveAt(i);
-        enemydrow.SortCard();
+        enemydrow.SortCard(true);
     }
     public void EnemyAddcard(int i)
     {
@@ -329,11 +385,68 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void EnemyAddcard2(int i)
     {
         enemydrow.Drowcard(i);
-        enemydrow.SortCard();
+        enemydrow.SortCard(true);
     }
+    [PunRPC]
     public void FreeChange()
     {
         mydrow.FreeDisCard();
     }
-    
+    [PunRPC]
+    public void Draw(int i)
+    {
+        mydrow.fastadd = true;
+        mydrow.AddCard(i);
+    }
+    [PunRPC]
+    public void Change(int i)
+    {
+        mydrow.fastadd = false;
+        mydrow.DisCard(i);
+    }
+    public bool allin=false;
+    [PunRPC]
+    public void Cost(float level)
+    {
+        if(mypoint<=mybet*(level-1))
+        {
+            mybet += mypoint;
+            mypoint = 0;
+            allin = true;
+        }
+        else
+        {
+            int addbet = (int)(mybet * (level - 1));
+            mybet += addbet;
+            mypoint -= addbet;
+        }
+        mybettext.text = mybet.ToString();
+        mypointtext.text = mypoint.ToString();
+        photonView.RPC(nameof(EnemyCost), RpcTarget.Others, level);
+    }
+    [PunRPC]
+    public void EnemyCost(float level)
+    {
+        if (enemypoint <= enemybet * (level - 1))
+        {
+            enemybet += enemypoint;
+            enemypoint = 0;
+        }
+        else
+        {
+            int addbet = (int)(enemybet * (level - 1));
+            enemybet += addbet;
+            enemypoint -= addbet;
+        }
+        enemybettext.text = enemybet.ToString();
+        enemypointtext.text = enemypoint.ToString();
+        Next();
+    }
+    [PunRPC]
+    public void Opencard()
+    {
+        hidebutton.SetActive(true);
+        Countdownstart();
+        enemydrow.OpenCard();
+    }
 }

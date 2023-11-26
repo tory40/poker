@@ -50,6 +50,13 @@ MonoBehaviour:
   - SendCommand
   - EnemyAddcard2
   - EnemyDiscard2
+  - Change
+  - Draw
+  - FreeChange
+  - LoopInit
+  - Cost
+  - EnemyCost
+  - Opencard
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
