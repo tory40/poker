@@ -127,6 +127,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         if(mycommandchoice&&enemycommandchoice)
         {
+            Debug.Log("デバッグ");
             mycommandchoice = false;
             enemycommandchoice = false;
             CommandStart();
@@ -287,9 +288,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void LoopInit()
     {
-        if (loop==14)
+        ++loop;
+        if (loop>=14)
         {
-            Countdownstart();
+            loop = 0;
+            //次の処理を追加
         }
         else
         {
@@ -299,6 +302,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject hidebutton;
     public void OnceInit()
     {
+        Debug.Log(actinit.Count);
+        Debug.Log(loop);
         if(actinit[loop]<7)
         {
             //自分の処理
