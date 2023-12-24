@@ -157,6 +157,9 @@ MonoBehaviour:
   types: []
   mines: 
   levels: []
+  createnumber: 0
+  actmine: 1
+  canpush: 0
   named: {fileID: 455196249290684975}
 --- !u!1 &1046201233776517504
 GameObject:

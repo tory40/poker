@@ -202,6 +202,7 @@ public class Drow : MonoBehaviour
         "Three of a kind mark" ,"Full house","Full house duo","Full house torio","Two pair flush","Three of a kind flush","Four of a kind","Four of a kind half","Four of a kind rainbow","Five of a kind",
     "Straight flush","Full house mark","Full house flush","Four of a kind mark","Four of a kind flush","Five of a kind half","Five of a kind flush"};
     int power=0;
+    public string level;
    public  void Check()
     {
         power = -1;
@@ -497,6 +498,7 @@ public class Drow : MonoBehaviour
             }
         }
         typetext.text = texts[power];
+        level= texts[power];
     }
     [SerializeField] GridLayoutGroup layout;
 

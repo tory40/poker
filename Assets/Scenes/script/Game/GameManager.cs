@@ -127,12 +127,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         if(mycommandchoice&&enemycommandchoice)
         {
-            Debug.Log("デバッグ");
             mycommandchoice = false;
             enemycommandchoice = false;
+            Debug.Log("デバッグ");
             CommandStart();
         }
     }
+
     [PunRPC]
     public void Game()
     {
@@ -226,7 +227,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void ChoiceCommand(CommandInit command)
     {
         mycommand = command;
-        mylandom = Random.Range(0f, 1f);
+        //値を変更
+        mylandom = Random.Range(0f,1f);
         photonView.RPC(nameof(SendCommand), RpcTarget.Others,command.createnumber,mylandom);
         commandpanel.SetActive(false);
         mycommandchoice = true;
@@ -234,6 +236,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SendCommand(int num,float landom)
     {
+        Debug.Log("landom"+landom);
         enemylandom = landom;
         enemycommand = commandlist[num];
         enemycommand.actmine = false;
@@ -281,8 +284,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             actinit =new List<int> {7,8,9,10,11,12,13,0,1,2,3,4,5,6};
         }
         loop = 0;
-        LoopInit();
-
+        Invoke(nameof(LoopInit), 2f);
     }
     public int loop = 0;
     [PunRPC]
@@ -293,6 +295,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             loop = 0;
             //次の処理を追加
+
         }
         else
         {
@@ -353,7 +356,8 @@ public class GameManager : MonoBehaviourPunCallbacks
                     }
                     break;
                 case "Fight":
-                    
+                    Fight();
+                    photonView.RPC(nameof(Fight), RpcTarget.Others);
                     break;
                 case "Open":
                     
@@ -413,6 +417,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Cost(float level)
     {
+        Debug.Log("コスト");
         if(mypoint<=mybet*(level-1))
         {
             mybet += mypoint;
@@ -445,6 +450,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         enemybettext.text = enemybet.ToString();
         enemypointtext.text = enemypoint.ToString();
+
         Next();
     }
     [PunRPC]
@@ -453,5 +459,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         hidebutton.SetActive(true);
         Countdownstart();
         enemydrow.OpenCard();
+    }
+    [PunRPC]
+    public void Fight()
+    {
+
     }
 }

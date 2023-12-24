@@ -17,6 +17,7 @@ public class CommandInit : MonoBehaviour
     public List<float> levels = new List<float>();
     public int createnumber;
     public bool actmine = true;
+    public bool canpush = true;
     [SerializeField] Text named;
     // Start is called before the first frame update
     void Start()
@@ -34,10 +35,15 @@ public class CommandInit : MonoBehaviour
         named.text = rename;
     }
     public void Click()
+     {
+        if(canpush)
         {
-           GameObject.Find("Init").GetComponent<InitController>().Clickbutton(this);
-           GameObject.Find("Init").transform.Find("Action").gameObject.SetActive(true);
-        //if•¶‚Åˆ—‚ğ•ª‚¯‚é
-        GameObject.Find("Init").transform.Find("Action/Act").gameObject.SetActive(true);
+            GameObject.Find("Init").GetComponent<InitController>().Clickbutton(this);
+            GameObject.Find("Init").transform.Find("Action").gameObject.SetActive(true);
+            //if•¶‚Åˆ—‚ğ•ª‚¯‚é
+            GameObject.Find("Init").transform.Find("Action/Act").gameObject.SetActive(true);
+            canpush = false;
+            GameObject.Find("Initbutton").SetActive(true);
+        }
     }
 }
