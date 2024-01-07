@@ -22,7 +22,7 @@ public class CommandInit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        canpush = true;
     }
 
     // Update is called once per frame
@@ -43,7 +43,6 @@ public class CommandInit : MonoBehaviour
             //if•¶‚Åˆ—‚ğ•ª‚¯‚é
             GameObject.Find("Init").transform.Find("Action/Act").gameObject.SetActive(true);
             canpush = false;
-            GameObject.Find("Initbutton").SetActive(true);
         }
     }
 }

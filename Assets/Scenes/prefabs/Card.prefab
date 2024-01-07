@@ -94,6 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca4bfc29c39878468bc56d9c2963c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  view: {fileID: 0}
   canchoice: 0
   choice: 0
 --- !u!114 &4589463633550667304

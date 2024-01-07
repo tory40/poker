@@ -201,18 +201,10 @@ public class Drow : MonoBehaviour
     List<string> texts = new List<string> { "High card" , "One pair" , "One pair mark" , "Two pair" , "Three of a kind" , "High card flush" , "One pair flush" , "Straight" , "Two pair twin" , "Two pair mark",
         "Three of a kind mark" ,"Full house","Full house duo","Full house torio","Two pair flush","Three of a kind flush","Four of a kind","Four of a kind half","Four of a kind rainbow","Five of a kind",
     "Straight flush","Full house mark","Full house flush","Four of a kind mark","Four of a kind flush","Five of a kind half","Five of a kind flush"};
-    int power=0;
+    public int power=0;
     public string level;
    public  void Check()
     {
-        power = -1;
-        numbers.Clear();
-        marks.Clear();
-        for (int i = 0; i < 5; ++i)
-        {
-            numbers.Add(deck[i]/4);
-            marks.Add(deck[i]%4);
-        }
         //ストレートを定義
         if(numbers[0]+1 == numbers[1] && numbers[1]+1 == numbers[2] && numbers[2]+1 == numbers[3] && numbers[3]+1 == numbers[4])
         {

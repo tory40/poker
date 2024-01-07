@@ -295,7 +295,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             loop = 0;
             //Ÿ‚Ìˆ—‚ğ’Ç‰Á
-
+            Countdownstart();
         }
         else
         {
@@ -343,7 +343,8 @@ public class GameManager : MonoBehaviourPunCallbacks
                     }
                     break;
                 case "Fold":
-                    
+                    Fold(true);
+                    photonView.RPC(nameof(Fold), RpcTarget.Others,false);
                     break;
                 case "Cost":
                     if (mycommand.mines[actinit[loop]])
@@ -463,6 +464,77 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Fight()
     {
-
+        mydrow.Check();
+        enemydrow.Check();
+        if(mydrow.power<enemydrow.power)
+        {
+            //‘Šè‚ÌŸ‚¿
+            enemypoint += mybet + enemybet;
+            mybet = 0;
+            enemybet = 0;
+        }
+        else if(mydrow.power > enemydrow.power)
+        {
+            //©•ª‚ÌŸ‚¿
+            mypoint += mybet + enemybet;
+            mybet = 0;
+            enemybet = 0;
+        }
+        else
+        {
+            //ˆø‚«‚í‚¯
+            mypoint += mybet;
+            enemypoint += enemybet;
+            mybet = 0;
+            enemybet = 0;
+        }
+        //Ÿ—˜”»’è
+        if(mypoint<=0||enemypoint<=0)
+        {
+            //Œˆ’…
+        }
+        else
+        {
+            //‘±s
+            Game();
+            Countdownstart();
+        }
+    }
+    [PunRPC]
+    public void Fold(bool mine)
+    {
+        if(mycommand.types[3]== "Fold"&& enemycommand.types[3] == "Fold")
+        {
+            //ˆø‚«‚í‚¯
+            mypoint += mybet;
+            enemypoint += enemybet;
+            mybet = 0;
+            enemybet = 0;
+        }
+        else if(mine)
+        {
+            //‘Šè‚ÌŸ‚¿
+            enemypoint += mybet + enemybet;
+            mybet = 0;
+            enemybet = 0;
+        }
+        else
+        {
+            //©•ª‚ÌŸ‚¿
+            mypoint += mybet + enemybet;
+            mybet = 0;
+            enemybet = 0;
+        }
+        //Ÿ—˜”»’è
+        if (mypoint <= 0 || enemypoint <= 0)
+        {
+            //Œˆ’…
+        }
+        else
+        {
+            //‘±s
+            Game();
+            Countdownstart();
+        }
     }
 }
