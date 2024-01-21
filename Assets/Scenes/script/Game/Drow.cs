@@ -90,6 +90,7 @@ public class Drow : MonoBehaviour
         }
         else
         {
+            changetext.gameObject.SetActive(false);
             if (add)
             {
                 discard += 1;

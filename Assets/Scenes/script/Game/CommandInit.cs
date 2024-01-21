@@ -42,7 +42,6 @@ public class CommandInit : MonoBehaviour
             GameObject.Find("Init").transform.Find("Action").gameObject.SetActive(true);
             //if•¶‚Åˆ—‚ğ•ª‚¯‚é
             GameObject.Find("Init").transform.Find("Action/Act").gameObject.SetActive(true);
-            canpush = false;
         }
     }
 }

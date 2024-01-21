@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Typejudge typesample;
     [SerializeField] Transform typeplace;
     List<PokerType> types;
+    List<PokerType> typescopy;
     List<Typejudge> typestrongs = new List<Typejudge>();
     [SerializeField] Text endbattletext;
     [SerializeField] Text fighttext;
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        typescopy = types;
         mypoint = mainrule.startpoint;
         mypointtext.text = mypoint.ToString();
         enemypoint = mainrule.startpoint;
@@ -169,7 +171,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         int card5 = Random.Range(0, 52);
         mydrow.StartCard(card1,card2,card3,card4,card5,false);
         photonView.RPC(nameof(EnemyGame), RpcTarget.Others,card1,card2,card3,card4,card5);
-        mydrow.Check();
     }
     [PunRPC]
     public void EnemyGame(int card1,int card2,int card3,int card4,int card5)
@@ -287,15 +288,36 @@ public class GameManager : MonoBehaviourPunCallbacks
         Invoke(nameof(LoopInit), 2f);
     }
     public int loop = 0;
+    public void Hide()
+    {
+        for (int i = 0; i < commandlist.Count; ++i)
+        {
+            commandlist[i].canpush = false;
+        }
+    }
     [PunRPC]
     public void LoopInit()
     {
         ++loop;
         if (loop>=14)
         {
-            loop = 0;
-            //éüÇÃèàóùÇí«â¡
-            Countdownstart();
+            if (!(nowturn>=fight))
+            {
+                loop = 0;
+                //éüÇÃèàóùÇí«â¡
+                Countdownstart();
+                for (int i = 0; i < commandlist.Count; ++i)
+                {
+                    commandlist[i].canpush = true;
+                }
+                nowturn += 1;
+                nowturntext.text = nowturn.ToString();
+            }
+            else
+            {
+                Fight();
+                photonView.RPC(nameof(Fight), RpcTarget.Others);
+            }
         }
         else
         {
