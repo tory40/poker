@@ -206,8 +206,21 @@ public class Drow : MonoBehaviour
     public string level;
    public  void Check()
     {
+        Debug.Log(deck.Count+"デッキ枚数");
+        numbers.Clear();
+        marks.Clear();
+        for(int i =0;i<deck.Count;++i)
+        {
+            numbers.Add(deck[i]/4);
+            marks.Add(deck[i] % 4);
+        }
+        Debug.Log(numbers[0]);
+        Debug.Log(numbers[1]);
+        Debug.Log(numbers[2]);
+        Debug.Log(numbers[3]);
+        Debug.Log(numbers[4]);
         //ストレートを定義
-        if(numbers[0]+1 == numbers[1] && numbers[1]+1 == numbers[2] && numbers[2]+1 == numbers[3] && numbers[3]+1 == numbers[4])
+        if (numbers[0]+1 == numbers[1] && numbers[1]+1 == numbers[2] && numbers[2]+1 == numbers[3] && numbers[3]+1 == numbers[4])
         {
             if (marks[0] == marks[1] && marks[1] == marks[2] && marks[2] == marks[3] && marks[3] == marks[4])
             {

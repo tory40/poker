@@ -134,6 +134,14 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.Log("デバッグ");
             CommandStart();
         }
+        if(checkmine&&checkenenmy)
+        {
+            checkmine = false;
+            checkenenmy = false;
+            //続行
+            Game();
+            Countdownstart();
+        }
     }
 
     [PunRPC]
@@ -171,6 +179,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         int card5 = Random.Range(0, 52);
         mydrow.StartCard(card1,card2,card3,card4,card5,false);
         photonView.RPC(nameof(EnemyGame), RpcTarget.Others,card1,card2,card3,card4,card5);
+        for (int i = 0; i < commandlist.Count; ++i)
+        {
+            commandlist[i].canpush = true;
+        }
     }
     [PunRPC]
     public void EnemyGame(int card1,int card2,int card3,int card4,int card5)
@@ -316,7 +328,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             else
             {
                 Fight();
-                photonView.RPC(nameof(Fight), RpcTarget.Others);
             }
         }
         else
@@ -483,6 +494,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         Countdownstart();
         enemydrow.OpenCard();
     }
+    public bool checkmine=false;
+    public bool checkenenmy=false;
+    [SerializeField] GameObject Checkinit;
+    [SerializeField] GameObject next;
     [PunRPC]
     public void Fight()
     {
@@ -494,6 +509,10 @@ public class GameManager : MonoBehaviourPunCallbacks
             enemypoint += mybet + enemybet;
             mybet = 0;
             enemybet = 0;
+            mybettext.text = mybet.ToString();
+            enemybettext.text = enemybet.ToString();
+            mypointtext.text = mypoint.ToString();
+            enemypointtext.text = enemypoint.ToString();
         }
         else if(mydrow.power > enemydrow.power)
         {
@@ -501,6 +520,10 @@ public class GameManager : MonoBehaviourPunCallbacks
             mypoint += mybet + enemybet;
             mybet = 0;
             enemybet = 0;
+            mybettext.text = mybet.ToString();
+            enemybettext.text = enemybet.ToString();
+            mypointtext.text = mypoint.ToString();
+            enemypointtext.text = enemypoint.ToString();
         }
         else
         {
@@ -509,18 +532,32 @@ public class GameManager : MonoBehaviourPunCallbacks
             enemypoint += enemybet;
             mybet = 0;
             enemybet = 0;
+            mybettext.text = mybet.ToString();
+            enemybettext.text = enemybet.ToString();
+            mypointtext.text = mypoint.ToString();
+            enemypointtext.text = enemypoint.ToString();
         }
         //勝利判定
         if(mypoint<=0||enemypoint<=0)
         {
             //決着
+
         }
         else
         {
-            //続行
-            Game();
-            Countdownstart();
+            //止めておいてボタン操作で進める
+            next.SetActive(true);
         }
+    }
+    public void Checkclick()
+    {
+        checkmine = true;
+        photonView.RPC(nameof(Checkenemy), RpcTarget.Others);
+    }
+    [PunRPC]
+    public void Checkenemy()
+    {
+        checkenenmy = true;
     }
     [PunRPC]
     public void Fold(bool mine)
