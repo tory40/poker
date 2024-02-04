@@ -5,6 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Commandobject", menuName = "create commandobject")]
 public class DefalutRule : ScriptableObject
 {
+    public enum Types
+    {
+        None,
+        Cost,
+        Change,
+        Draw,
+        FreeChange,
+        Open,
+        Fight,
+        Fold,
+    }
+
     public List<string> types = new List<string> {"None", "None", "None", "Cost", "None", "None", "None"};
     public List<bool> mines = new List<bool> {true, true, true, true, true, true, true,};
     public List<float> levels = new List<float> {0, 0, 0, 1, 0, 0, 0};
