@@ -12,14 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1835e81a667a4e45867d57cbf83dcfe, type: 3}
   m_Name: Fold
   m_EditorClassIdentifier: 
-  types:
-  - None
-  - None
-  - None
-  - Fold
-  - None
-  - None
-  - None
+  types: 00000000000000000000000007000000000000000000000000000000
   mines: 01010101010101
   levels:
   - 0
@@ -30,7 +23,7 @@ MonoBehaviour:
   - 0
   - 0
   allin: 0
-  commandname: "\u672A\u767B\u9332"
+  commandname: Fold
   speed: 0
   canturn: 1
   beforeturn: 0

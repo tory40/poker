@@ -13377,6 +13377,9 @@ MonoBehaviour:
   DefaultCommand:
   - {fileID: 11400000, guid: 4996d71a0a11147409bc761775ed1e75, type: 2}
   - {fileID: 11400000, guid: 9b0c148d54a78bc43a4888e7e37f89ce, type: 2}
+  - {fileID: 11400000, guid: 0280cf0c3bef6f54ca395e41bdc64a07, type: 2}
+  - {fileID: 11400000, guid: 941c98ec69081674a801340a46d04db5, type: 2}
+  - {fileID: 11400000, guid: a8cc3cfe7a6aa8f4abd4ac7d54648924, type: 2}
   serectobject: {fileID: 162782115}
   startpoint: 10000
   betpoint: 100

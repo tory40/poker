@@ -12,14 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1835e81a667a4e45867d57cbf83dcfe, type: 3}
   m_Name: Draw+1
   m_EditorClassIdentifier: 
-  types:
-  - None
-  - None
-  - Cost
-  - Draw
-  - None
-  - None
-  - None
+  types: 00000000000000000100000003000000000000000000000000000000
   mines: 01010101010101
   levels:
   - 0

@@ -1630,7 +1630,7 @@ MonoBehaviour:
   checkmine: 0
   checkenenmy: 0
   Checkinit: {fileID: 0}
-  next: {fileID: 0}
+  next: {fileID: 615046245}
 --- !u!114 &811629248
 MonoBehaviour:
   m_ObjectHideFlags: 0

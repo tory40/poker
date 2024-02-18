@@ -21,6 +21,6 @@ public class CardView : MonoBehaviour
     }
     public void Hide()
     {
-      //  hide.SetActive(true);
+      hide.SetActive(true);
     }
 }

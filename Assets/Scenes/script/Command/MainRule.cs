@@ -51,11 +51,11 @@ public class MainRule : MonoBehaviour
                 for (int j = 0; j < 7; ++j)
                 {
                     obj.elements[j].elementnumber = j;
-                    obj.elements[j].type = getdefalut.types[j];
+                    obj.elements[j].type = getdefalut.Gettype(j);
                     obj.elements[j].mine = getdefalut.mines[j];
                     obj.elements[j].level = getdefalut.levels[j];
                 }
-                obj.allin = getdefalut.allin;
+                obj.allin = getdefalut.GetAllin();
                 obj.commandname = getdefalut.commandname;
                 obj.speed = getdefalut.speed;
                 obj.canturn = getdefalut.canturn;
@@ -92,11 +92,11 @@ public class MainRule : MonoBehaviour
                     for(int j=0; j<7; ++j)
                     {
                         obj.elements[j].elementnumber=j;
-                        obj.elements[j].type = getdefalut.types[j];
+                        obj.elements[j].type = getdefalut.Gettype(j);
                         obj.elements[j].mine = getdefalut.mines[j];
                         obj.elements[j].level = getdefalut.levels[j];
                     }
-                    obj.allin = getdefalut.allin;
+                    obj.allin = getdefalut.GetAllin();
                     obj.commandname = getdefalut.commandname;
                     obj.speed = getdefalut.speed;
                     obj.canturn = getdefalut.canturn;

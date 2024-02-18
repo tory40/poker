@@ -394,7 +394,14 @@ public class GameManager : MonoBehaviourPunCallbacks
                     photonView.RPC(nameof(Fight), RpcTarget.Others);
                     break;
                 case "Open":
-                    
+                    if(mycommand.mines[actinit[loop]])
+                    {
+                        photonView.RPC(nameof(Opencard), RpcTarget.Others);
+                    }
+                    else
+                    {
+                        Opencard();
+                    }
                     break;
                 case "None":
                     Next();
