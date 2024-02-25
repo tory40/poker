@@ -241,7 +241,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         mycommand = command;
         //’l‚ğ•ÏX
-        mylandom = Random.Range(0f,1f);
+        //mylandom = Random.Range(0f,1f);
+        mylandom = 0f;
         photonView.RPC(nameof(SendCommand), RpcTarget.Others,command.createnumber,mylandom);
         commandpanel.SetActive(false);
         mycommandchoice = true;
@@ -343,6 +344,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if(actinit[loop]<7)
         {
             //©•ª‚Ìˆ—
+            Debug.Log(actinit.Count);
             switch (mycommand.types[actinit[loop]])
             {
                 case "FreeChange":
@@ -362,7 +364,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                     }
                     else
                     {
-                        photonView.RPC(nameof(Draw), RpcTarget.Others, (int)mycommand.levels[actinit[loop]]);
+                        photonView.RPC(nameof(Draw), RpcTarget.Others,(int)mycommand.levels[actinit[loop]]);
                     }
                     break;
                 case "Change":
