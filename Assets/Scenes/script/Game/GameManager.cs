@@ -241,8 +241,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         mycommand = command;
         //’l‚ð•ÏX
-        //mylandom = Random.Range(0f,1f);
-        mylandom = 0f;
+        mylandom = Random.Range(0f,1f);
         photonView.RPC(nameof(SendCommand), RpcTarget.Others,command.createnumber,mylandom);
         commandpanel.SetActive(false);
         mycommandchoice = true;
@@ -311,7 +310,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void LoopInit()
     {
-        ++loop;
         if (loop>=14)
         {
             if (!(nowturn>=fight))
@@ -339,12 +337,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject hidebutton;
     public void OnceInit()
     {
-        Debug.Log(actinit.Count);
-        Debug.Log(loop);
         if(actinit[loop]<7)
         {
             //Ž©•ª‚Ìˆ—
-            Debug.Log(actinit.Count);
             switch (mycommand.types[actinit[loop]])
             {
                 case "FreeChange":
@@ -415,8 +410,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void Next()
     {
+        Next2();
+        photonView.RPC(nameof(Next2), RpcTarget.Others);
+    }
+    [PunRPC]
+    public void Next2()
+    {
+        ++loop;
         LoopInit();
-        photonView.RPC(nameof(LoopInit), RpcTarget.Others);
     }
     
     public void EnemyDiscard(int i)
