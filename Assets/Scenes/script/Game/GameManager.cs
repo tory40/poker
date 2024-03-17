@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Text nowturntext;
     int endbattle;
     int fight;
-    int nowbattle=0;
+    int nowbattle = 0;
     int nowturn;
     [SerializeField] Text addtimetext;
     [SerializeField] Text oncetimetext;
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform commandtrans;
     [SerializeField] CommandInit commandprefab;
     List<CommandInit> commandlist = new List<CommandInit>();
-    public bool countdown =false;
+    public bool countdown = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,20 +55,20 @@ public class GameManager : MonoBehaviourPunCallbacks
         endbattletext.text = endbattle.ToString();
         fight = mainrule.fight;
         fighttext.text = fight.ToString();
-        types.Sort((a,b)=>(int)((b.strong-a.strong)*10000));
+        types.Sort((a, b) => (int)((b.strong - a.strong) * 10000));
         addtime = mainrule.addtime;
         addtimetext.text = addtime.ToString();
         oncetime = mainrule.time;
         oncetimetext.text = oncetime.ToString();
-        for (int i=0;i<27;++i)
+        for (int i = 0; i < 27; ++i)
         {
             Typejudge judge = Instantiate(typesample, typeplace, false);
             judge.White();
-            judge.transform.Find("Typetext").GetComponent<Text>().text=types[i].type;
+            judge.transform.Find("Typetext").GetComponent<Text>().text = types[i].type;
             typestrongs.Add(judge);
         }
 
-        for(int i = 0; i < 30; ++i)
+        for (int i = 0; i < 30; ++i)
         {
             CommandInit command = Instantiate(commandprefab, commandtrans, false);
             command.allin = mainrule.CommandList[i].allin;
@@ -79,9 +79,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             command.beforeturn = mainrule.CommandList[i].beforeturn;
             command.objectbool = mainrule.CommandList[i].objectbool;
             command.createnumber = i;
-            for(int j = 0; j < 7; ++j)
+            for (int j = 0; j < 7; ++j)
             {
-                command.types.Add (mainrule.CommandList[i].elements[j].type);
+                command.types.Add(mainrule.CommandList[i].elements[j].type);
                 command.mines.Add(mainrule.CommandList[i].elements[j].mine);
                 command.levels.Add(mainrule.CommandList[i].elements[j].level);
             }
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 command.gameObject.SetActive(false);
             }
-         }
+        }
         var hashtable = new ExitGames.Client.Photon.Hashtable();
         hashtable["Score"] = 1;
         hashtable["Message"] = "こんにちは";
@@ -106,12 +106,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        if(countdown)
+        if (countdown)
         {
-            if(oncetime>0)
+            if (oncetime > 0)
             {
                 oncetime -= Time.deltaTime;
-                if(oncetime < 0)
+                if (oncetime < 0)
                 {
                     oncetime = 0;
                 }
@@ -121,20 +121,20 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 addtime -= Time.deltaTime;
                 addtimetext.text = addtime.ToString("0.00");
-                if(addtime<0)
+                if (addtime < 0)
                 {
                     //タイムアウト1
                 }
             }
         }
-        if(mycommandchoice&&enemycommandchoice)
+        if (mycommandchoice && enemycommandchoice)
         {
             mycommandchoice = false;
             enemycommandchoice = false;
             Debug.Log("デバッグ");
             CommandStart();
         }
-        if(checkmine&&checkenenmy)
+        if (checkmine && checkenenmy)
         {
             checkmine = false;
             checkenenmy = false;
@@ -142,12 +142,18 @@ public class GameManager : MonoBehaviourPunCallbacks
             Game();
             Countdownstart();
         }
+        if(mynext&&enemynext)
+        {
+            mynext = false;
+            enemynext = false;
+            LoopInit();
+        }
     }
 
     [PunRPC]
     public void Game()
     {
-        if(mypoint<=mainrule.betpoint)
+        if (mypoint <= mainrule.betpoint)
         {
             allin = true;
             mybet = mypoint;
@@ -172,22 +178,22 @@ public class GameManager : MonoBehaviourPunCallbacks
         nowbattletext.text = nowbattle.ToString();
         nowturn = 1;
         nowturntext.text = nowturn.ToString();
-        int card1=  Random.Range(0, 52);
+        int card1 = Random.Range(0, 52);
         int card2 = Random.Range(0, 52);
         int card3 = Random.Range(0, 52);
         int card4 = Random.Range(0, 52);
         int card5 = Random.Range(0, 52);
-        mydrow.StartCard(card1,card2,card3,card4,card5,false);
-        photonView.RPC(nameof(EnemyGame), RpcTarget.Others,card1,card2,card3,card4,card5);
+        mydrow.StartCard(card1, card2, card3, card4, card5, false);
+        photonView.RPC(nameof(EnemyGame), RpcTarget.Others, card1, card2, card3, card4, card5);
         for (int i = 0; i < commandlist.Count; ++i)
         {
             commandlist[i].canpush = true;
         }
     }
     [PunRPC]
-    public void EnemyGame(int card1,int card2,int card3,int card4,int card5)
+    public void EnemyGame(int card1, int card2, int card3, int card4, int card5)
     {
-        enemydrow.StartCard(card1, card2, card3, card4, card5,true);
+        enemydrow.StartCard(card1, card2, card3, card4, card5, true);
     }
     int count;
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
@@ -195,7 +201,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         // カスタムプロパティが更新されたプレイヤーのプレイヤー名とIDをコンソールに出力する
         Debug.Log($"{targetPlayer.NickName}({targetPlayer.ActorNumber})");
 
-        
+
 
         // 更新されたプレイヤーのカスタムプロパティのペアをコンソールに出力する
         foreach (var prop in changedProps)
@@ -203,7 +209,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.Log($"{prop.Key}: {prop.Value}");
             if (prop.Key.ToString() == "Score")
             {
-                if((int)prop.Value == 1)
+                if ((int)prop.Value == 1)
                 {
                     count++;
                     Debug.Log(count);
@@ -233,23 +239,23 @@ public class GameManager : MonoBehaviourPunCallbacks
     public CommandInit mycommand;
     public CommandInit enemycommand;
     [SerializeField] GameObject commandpanel;
-    public bool mycommandchoice=false;
-    public bool enemycommandchoice=false;
+    public bool mycommandchoice = false;
+    public bool enemycommandchoice = false;
     public float mylandom;
     public float enemylandom;
     public void ChoiceCommand(CommandInit command)
     {
         mycommand = command;
         //値を変更
-        mylandom = Random.Range(0f,1f);
-        photonView.RPC(nameof(SendCommand), RpcTarget.Others,command.createnumber,mylandom);
+        mylandom = Random.Range(0f, 1f);
+        photonView.RPC(nameof(SendCommand), RpcTarget.Others, command.createnumber, mylandom);
         commandpanel.SetActive(false);
         mycommandchoice = true;
     }
     [PunRPC]
-    public void SendCommand(int num,float landom)
+    public void SendCommand(int num, float landom)
     {
-        Debug.Log("landom"+landom);
+        Debug.Log("landom" + landom);
         enemylandom = landom;
         enemycommand = commandlist[num];
         enemycommand.actmine = false;
@@ -258,7 +264,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public List<int> actinit;
     public void CommandStart()
     {
-        if(mycommand.types[3] == "Fight")
+        if (mycommand.types[3] == "Fight")
         {
             mylandom += 1;
         }
@@ -274,27 +280,28 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             enemylandom -= 1;
         }
-        if (mycommand.speed==enemycommand.speed)
+        if (mycommand.speed == enemycommand.speed)
         {
             //(同速)
-            if(mylandom<enemylandom)
+            if (mylandom < enemylandom)
             {
-                actinit = new List<int> {0,1,2,7,8,9,3,10,4,5,6,11,12,13};
+                actinit = new List<int> { 0, 1, 2, 7, 8, 9, 3, 10, 4, 5, 6, 11, 12, 13 };
             }
             else
             {
-                actinit = new List<int> {7,8,9,0,1,2,10,3,11,12,13,4,5,6};
+                actinit = new List<int> { 7, 8, 9, 0, 1, 2, 10, 3, 11, 12, 13, 4, 5, 6 };
             }
+            Debug.Log(mylandom - enemylandom);
         }
-        else if(mycommand.speed > enemycommand.speed)
+        else if (mycommand.speed > enemycommand.speed)
         {
             //(先行)
-            actinit = new List<int> {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
+            actinit = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
         }
         else
         {
             //(後攻)
-            actinit =new List<int> {7,8,9,10,11,12,13,0,1,2,3,4,5,6};
+            actinit = new List<int> { 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6 };
         }
         loop = 0;
         Invoke(nameof(LoopInit), 2f);
@@ -310,9 +317,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void LoopInit()
     {
-        if (loop>=14)
+        if (loop >= 14)
         {
-            if (!(nowturn>=fight))
+            if (!(nowturn >= fight))
             {
                 loop = 0;
                 //次の処理を追加
@@ -337,13 +344,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject hidebutton;
     public void OnceInit()
     {
-        if(actinit[loop]<7)
+        Debug.Log(actinit[loop] + "と" + loop);
+        if (actinit[loop] < 7)
         {
             //自分の処理
             switch (mycommand.types[actinit[loop]])
             {
                 case "FreeChange":
-                    if(mycommand.mines[actinit[loop]])
+                    if (mycommand.mines[actinit[loop]])
                     {
                         FreeChange();
                     }
@@ -359,7 +367,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                     }
                     else
                     {
-                        photonView.RPC(nameof(Draw), RpcTarget.Others,(int)mycommand.levels[actinit[loop]]);
+                        photonView.RPC(nameof(Draw), RpcTarget.Others, (int)mycommand.levels[actinit[loop]]);
                     }
                     break;
                 case "Change":
@@ -374,7 +382,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                     break;
                 case "Fold":
                     Fold(true);
-                    photonView.RPC(nameof(Fold), RpcTarget.Others,false);
+                    photonView.RPC(nameof(Fold), RpcTarget.Others, false);
                     break;
                 case "Cost":
                     if (mycommand.mines[actinit[loop]])
@@ -391,7 +399,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                     photonView.RPC(nameof(Fight), RpcTarget.Others);
                     break;
                 case "Open":
-                    if(mycommand.mines[actinit[loop]])
+                    if (mycommand.mines[actinit[loop]])
                     {
                         photonView.RPC(nameof(Opencard), RpcTarget.Others);
                     }
@@ -413,13 +421,21 @@ public class GameManager : MonoBehaviourPunCallbacks
         Next2();
         photonView.RPC(nameof(Next2), RpcTarget.Others);
     }
+    public bool mynext = false;
+    public bool enemynext = false;
     [PunRPC]
     public void Next2()
     {
         ++loop;
-        LoopInit();
+        //LoopInit();
+        mynext = true;
+        photonView.RPC(nameof(Next2), RpcTarget.Others);
     }
-    
+    [PunRPC]
+    public void Next3()
+    {
+        enemynext = true;
+    }
     public void EnemyDiscard(int i)
     {
         photonView.RPC(nameof(EnemyDiscard2), RpcTarget.Others, i);

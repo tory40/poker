@@ -92,6 +92,10 @@ public class PhotonSet : MonoBehaviourPunCallbacks
             }
         }
     }
+    public void Chancel()
+    {
+
+    }
     private void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
