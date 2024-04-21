@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using ExitGames.Client.Photon;
-
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -42,10 +43,18 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] CommandInit commandprefab;
     List<CommandInit> commandlist = new List<CommandInit>();
     public bool countdown = false;
+    float winmine;
+    float losemine;
+    float winenemy;
+    float loseenemy;
     // Start is called before the first frame update
     void Start()
     {
         typescopy = types;
+        winmine = mainrule.winmine;
+        winenemy = mainrule.winenemy;
+        losemine = mainrule.losemine;
+        loseenemy = mainrule.loseenemy;
         mypoint = mainrule.startpoint;
         mypointtext.text = mypoint.ToString();
         enemypoint = mainrule.startpoint;
@@ -429,7 +438,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         ++loop;
         //LoopInit();
         mynext = true;
-        photonView.RPC(nameof(Next2), RpcTarget.Others);
+        photonView.RPC(nameof(Next3), RpcTarget.Others);
     }
     [PunRPC]
     public void Next3()
@@ -532,7 +541,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         if(mydrow.power<enemydrow.power)
         {
             //ëäéËÇÃèüÇø
-            enemypoint += mybet + enemybet;
+            enemypoint += (int)((mybet*winmine) + (enemybet*winenemy));
+            mypoint += (int)((mybet * losemine) + (enemybet * loseenemy));
             mybet = 0;
             enemybet = 0;
             mybettext.text = mybet.ToString();
@@ -543,7 +553,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         else if(mydrow.power > enemydrow.power)
         {
             //é©ï™ÇÃèüÇø
-            mypoint += mybet + enemybet;
+            mypoint += (int)((mybet * winmine) + (enemybet * winenemy));
+            enemypoint += (int)((mybet * losemine) + (enemybet * loseenemy));
             mybet = 0;
             enemybet = 0;
             mybettext.text = mybet.ToString();
@@ -595,20 +606,34 @@ public class GameManager : MonoBehaviourPunCallbacks
             enemypoint += enemybet;
             mybet = 0;
             enemybet = 0;
+            mybettext.text = mybet.ToString();
+            enemybettext.text = enemybet.ToString();
+            mypointtext.text = mypoint.ToString();
+            enemypointtext.text = enemypoint.ToString();
         }
         else if(mine)
         {
             //ëäéËÇÃèüÇø
-            enemypoint += mybet + enemybet;
+            enemypoint += (int)((mybet * winmine) + (enemybet * winenemy));
+            mypoint += (int)((mybet * losemine) + (enemybet * loseenemy));
             mybet = 0;
             enemybet = 0;
+            mybettext.text = mybet.ToString();
+            enemybettext.text = enemybet.ToString();
+            mypointtext.text = mypoint.ToString();
+            enemypointtext.text = enemypoint.ToString();
         }
         else
         {
             //é©ï™ÇÃèüÇø
-            mypoint += mybet + enemybet;
+            mypoint += (int)((mybet * winmine) + (enemybet * winenemy));
+            enemypoint += (int)((mybet * losemine) + (enemybet * loseenemy));
             mybet = 0;
             enemybet = 0;
+            mybettext.text = mybet.ToString();
+            enemybettext.text = enemybet.ToString();
+            mypointtext.text = mypoint.ToString();
+            enemypointtext.text = enemypoint.ToString();
         }
         //èüóòîªíË
         if (mypoint <= 0 || enemypoint <= 0)
