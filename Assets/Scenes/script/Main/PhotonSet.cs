@@ -94,7 +94,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     }
     public void Chancel()
     {
-
+        PhotonNetwork.LeaveRoom();
     }
     private void Start()
     {

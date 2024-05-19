@@ -5,19 +5,25 @@ using UnityEngine.UI;
 
 public class Typejudge : MonoBehaviour
 {
-    [SerializeField] Image red;
-    [SerializeField] Image blue;
+    [SerializeField] GameObject red;
+    [SerializeField] GameObject blue;
+    [SerializeField] GameObject each;
     public void Blue()
     {
-        blue.enabled = true;
+        blue.SetActive(true);
     }
     public void Red()
     {
-        red.enabled = true;
+        red.SetActive(true);
+    }
+    public void Each()
+    {
+        each.SetActive(true);
     }
     public void White()
     {
-        blue.enabled = false;
-        red.enabled = false;
+        blue.SetActive(false);
+        red.SetActive(false);
+        each.SetActive(false);
     }
 }

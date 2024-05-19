@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        typescopy = types;
         winmine = mainrule.winmine;
         winenemy = mainrule.winenemy;
         losemine = mainrule.losemine;
@@ -60,6 +59,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         enemypoint = mainrule.startpoint;
         enemypointtext.text = enemypoint.ToString();
         types = mainrule.types;
+        typescopy = types;
         endbattle = mainrule.endbattle;
         endbattletext.text = endbattle.ToString();
         fight = mainrule.fight;
@@ -538,7 +538,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         mydrow.Check();
         enemydrow.Check();
-        if(mydrow.power<enemydrow.power)
+        if(typescopy[mydrow.power].strong<typescopy[enemydrow.power].strong)
         {
             //ëäéËÇÃèüÇø
             enemypoint += (int)((mybet*winmine) + (enemybet*winenemy));
@@ -550,7 +550,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             mypointtext.text = mypoint.ToString();
             enemypointtext.text = enemypoint.ToString();
         }
-        else if(mydrow.power > enemydrow.power)
+        else if(typescopy[mydrow.power].strong > typescopy[enemydrow.power].strong)
         {
             //é©ï™ÇÃèüÇø
             mypoint += (int)((mybet * winmine) + (enemybet * winenemy));
