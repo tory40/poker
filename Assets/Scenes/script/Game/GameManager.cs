@@ -10,6 +10,10 @@ using DG.Tweening;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    [SerializeField] GameObject serect;
+    [SerializeField] GameObject init;
+    [SerializeField] GameObject turnobj;
+    [SerializeField] Transform initlistposition;
     [SerializeField] Drow mydrow;
     [SerializeField] Drow enemydrow;
     RuleInit mainrule = RuleInit.rule;
@@ -59,7 +63,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         enemypoint = mainrule.startpoint;
         enemypointtext.text = enemypoint.ToString();
         types = mainrule.types;
-        typescopy = types;
+        typescopy = new List<PokerType>(types);
         endbattle = mainrule.endbattle;
         endbattletext.text = endbattle.ToString();
         fight = mainrule.fight;
@@ -252,6 +256,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool enemycommandchoice = false;
     public float mylandom;
     public float enemylandom;
+    public List<Actlist> actlist=new List<Actlist>();
     public void ChoiceCommand(CommandInit command)
     {
         mycommand = command;
@@ -311,6 +316,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             //(å„çU)
             actinit = new List<int> { 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6 };
+        }
+
+        for(int i=0;i<actinit.Count;++i)
+        {
+
         }
         loop = 0;
         Invoke(nameof(LoopInit), 2f);
