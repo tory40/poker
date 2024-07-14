@@ -211,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162c92d3c7ace294cb61543a75dbd076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  imagecolor: {fileID: 5101897942916361732}
   type: 
   level: 0
   mine: 0

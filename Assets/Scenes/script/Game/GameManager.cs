@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] GameObject serect;
     [SerializeField] GameObject init;
-    [SerializeField] GameObject turnobj;
+    [SerializeField] Actlist turnobj;
     [SerializeField] Transform initlistposition;
     [SerializeField] Drow mydrow;
     [SerializeField] Drow enemydrow;
@@ -278,6 +278,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public List<int> actinit;
     public void CommandStart()
     {
+        serect.SetActive(false);
+        init.SetActive(true);
         if (mycommand.types[3] == "Fight")
         {
             mylandom += 1;
@@ -317,10 +319,55 @@ public class GameManager : MonoBehaviourPunCallbacks
             //(å„çU)
             actinit = new List<int> { 7, 8, 9, 10, 11, 12, 13, 0, 1, 2, 3, 4, 5, 6 };
         }
-
+        foreach(var list in actlist)
+        {
+            Destroy(list.gameObject);
+        }
+        actlist.Clear();
         for(int i=0;i<actinit.Count;++i)
         {
+ 
+            int j = actinit[i];
+            if(j>6)
+            {
+                //ëäéË
+                j -= 7;
+                if (enemycommand.types[j]== "None")
+                {
 
+                }
+                else
+                {
+                    Actlist act = Instantiate(turnobj, initlistposition, false);
+                    act.actmine = false;
+                    act.type = enemycommand.types[j];
+                    act.level = enemycommand.levels[j];
+                    act.mine = !enemycommand.mines[j];
+                    act.actfinish = false;
+                    act.ColorWhaitRed();
+                    actlist.Add(act);
+                }
+
+            }
+            else
+            {
+                //é©ï™
+                if (mycommand.types[j] == "None")
+                {
+
+                }
+                else
+                {
+                    Actlist act = Instantiate(turnobj, initlistposition, false);
+                    act.actmine = true;
+                    act.type = mycommand.types[j];
+                    act.level = mycommand.levels[j];
+                    act.mine = mycommand.mines[j];
+                    act.actfinish = false;
+                    act.ColorWhaitBlue();
+                    actlist.Add(act);
+                }
+            }
         }
         loop = 0;
         Invoke(nameof(LoopInit), 2f);
@@ -338,9 +385,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (loop >= 14)
         {
+            serect.SetActive(true);
+            init.SetActive(false);
             if (!(nowturn >= fight))
             {
                 loop = 0;
+                actnumlist = -1;
+                actlist[actnumlist].ColorGray();
                 //éüÇÃèàóùÇí«â¡
                 Countdownstart();
                 for (int i = 0; i < commandlist.Count; ++i)
@@ -361,11 +412,17 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
     [SerializeField] GameObject hidebutton;
+    int actnumlist = -1;
     public void OnceInit()
     {
         Debug.Log(actinit[loop] + "Ç∆" + loop);
         if (actinit[loop] < 7)
         {
+            if(mycommand.types[actinit[loop]]!= "None")
+            {
+                actnumlist++;
+                actlist[actnumlist].ColorBlue();
+            }
             //é©ï™ÇÃèàóù
             switch (mycommand.types[actinit[loop]])
             {
@@ -432,6 +489,14 @@ public class GameManager : MonoBehaviourPunCallbacks
                     break;
                 default:
                     return;
+            }
+        }
+        else
+        {
+            if (enemycommand.types[actinit[loop]] != "None")
+            {
+                actnumlist++;
+                actlist[actnumlist].ColorRed();
             }
         }
     }
