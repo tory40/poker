@@ -383,6 +383,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void LoopInit()
     {
+        try
+        {
+            actlist[actnumlist].ColorGray();
+        }
+        catch
+        {
+
+        }
         if (loop >= 14)
         {
             serect.SetActive(true);
@@ -391,7 +399,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 loop = 0;
                 actnumlist = -1;
-                actlist[actnumlist].ColorGray();
                 //Ÿ‚Ìˆ—‚ğ’Ç‰Á
                 Countdownstart();
                 for (int i = 0; i < commandlist.Count; ++i)
@@ -493,7 +500,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            if (enemycommand.types[actinit[loop]] != "None")
+            if (enemycommand.types[actinit[loop]-7] != "None")
             {
                 actnumlist++;
                 actlist[actnumlist].ColorRed();

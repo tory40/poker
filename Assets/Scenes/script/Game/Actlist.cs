@@ -11,16 +11,16 @@ public class Actlist : MonoBehaviour
     public bool mine;
     public bool actmine;
     public bool actfinish;
-    public string typetext;
-    public string minetext;
-    public string leveltext;
+    public Text typetext;
+    public Text minetext;
+    public Text leveltext;
 
     // Start is called before the first frame update
     void Start()
     {
-        typetext = GameObject.Find("Init2").transform.Find("Panel").transform.Find("Type").transform.Find("Text").GetComponent<Text>().text;
-        minetext = GameObject.Find("Init2").transform.Find("Panel").transform.Find("Mine").transform.Find("Text").GetComponent<Text>().text;
-        leveltext = GameObject.Find("Init2").transform.Find("Panel").transform.Find("Level").transform.Find("Text").GetComponent<Text>().text;
+        typetext = GameObject.Find("Init2").transform.Find("Panel").transform.Find("Type").transform.Find("Text").GetComponent<Text>();
+        minetext = GameObject.Find("Init2").transform.Find("Panel").transform.Find("Mine").transform.Find("Text").GetComponent<Text>();
+        leveltext = GameObject.Find("Init2").transform.Find("Panel").transform.Find("Level").transform.Find("Text").GetComponent<Text>();
     }
 
     // Update is called once per frame
@@ -52,15 +52,15 @@ public class Actlist : MonoBehaviour
 
     public void Click()
     {
-        typetext = type;
+        typetext.text = type;
         if(mine)
         {
-            minetext = "Ž©•ª";
+            minetext.text = "Ž©•ª";
         }
         else
         {
-            minetext = "‘ŠŽè";
+            minetext.text = "‘ŠŽè";
         }
-        leveltext = level.ToString();
+        leveltext.text = level.ToString();
     }
 }

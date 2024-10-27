@@ -1902,7 +1902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serect: {fileID: 1320305212}
   init: {fileID: 255053800}
-  turnobj: {fileID: 5101897943231545597, guid: fb53870c718fe8146a5cc185567621f1, type: 3}
+  turnobj: {fileID: 682239813767584085, guid: fb53870c718fe8146a5cc185567621f1, type: 3}
   initlistposition: {fileID: 349062248}
   mydrow: {fileID: 1431808645}
   enemydrow: {fileID: 1251090609}
