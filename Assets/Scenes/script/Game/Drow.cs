@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 public class Drow : MonoBehaviour
 {
@@ -162,7 +164,7 @@ public class Drow : MonoBehaviour
         deck.Add(j);
         Debug.Log(j);
     }
-    public void SortCard(bool hide)
+    public async void SortCard(bool hide)
     {
         deck.Sort();
         foreach (CardController card in cards)
@@ -172,14 +174,24 @@ public class Drow : MonoBehaviour
         cards.Clear();
         for (int i = 0; i < deck.Count; ++i)
         {
-            CardController card = Instantiate(cardPrefab, field, false);
+            layout.enabled = false;
+            CardController card = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity, transform.parent);
+            card.transform.DOMove(field.position, 0.2f).SetEase(Ease.OutQuint);
+            card.transform.SetParent(field, false);
+            // CardController card = Instantiate(cardPrefab, field, false);
             card.Init(deck[i], i);
-            if(hide)
+            if (hide)
             {
                 card.view.Hide();
             }
             cards.Add(card);
+            await UniTask.Delay(200);
+            layout.enabled = true;
+            Layout(layout);
+            await UniTask.Delay(100);
         }
+        await UniTask.Delay(250);
+        layout.enabled = true;
         Layout(layout);
     }
     public void OpenCard()
