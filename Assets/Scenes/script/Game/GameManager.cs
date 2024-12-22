@@ -544,8 +544,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void EnemyAddcard2(int i)
     {
-        enemydrow.Drowcard(i);
-        enemydrow.SortCard(true);
+        enemydrow.DrowcardCopy(i,true);
     }
     [PunRPC]
     public void FreeChange()

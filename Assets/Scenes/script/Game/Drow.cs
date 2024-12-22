@@ -124,7 +124,7 @@ public class Drow : MonoBehaviour
             GameObject.Find("Gamemaneger").GetComponent<GameManager>().Next();
         }
     }
-    public void AddCard(int i)
+    public void AddCardDefo(int i)
     {
         for(int j=0;j<i;++j)
         {
@@ -142,6 +142,53 @@ public class Drow : MonoBehaviour
         {
             GameObject.Find("Gamemaneger").GetComponent<GameManager>().Next();
         }
+    }
+    public void AddCard(int i)
+    {
+        for (int j = 0; j < i; ++j)
+        {
+            int cardnumber = Random.Range(0, 52);
+            DrowcardCopy(cardnumber,false);
+            GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyAddcard(cardnumber);
+        }
+        if (fastadd)
+        {
+            discard = i;
+            DisCard(i);
+        }
+        else
+        {
+            GameObject.Find("Gamemaneger").GetComponent<GameManager>().Next();
+        }
+    }
+    int memory;
+    public async void DrowcardCopy(int j,bool hide)
+    {
+        memory = 0;
+        for(int i=0; i < deck.Count && deck[i]<j;++i)
+        {
+            memory = i;
+        }
+        deck.Insert(memory,j);
+        layout.enabled = false;
+        CardController card = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity, transform.parent);
+        card.transform.DOMove(field.position, 0.2f).SetEase(Ease.OutQuint);
+        card.transform.SetParent(field, false);
+        // CardController card = Instantiate(cardPrefab, field, false);
+        card.Init(deck[memory], memory);
+        if (hide)
+        {
+            card.view.Hide();
+        }
+        cards.Add(card);
+        await UniTask.Delay(200);
+        layout.enabled = true;
+        Layout(layout);
+        await UniTask.Delay(100);
+        Debug.Log(j);
+        await UniTask.Delay(250);
+        layout.enabled = true;
+        Layout(layout);
     }
     public void StartCard(int card1,int card2,int card3,int card4,int card5,bool hide) 
     {
