@@ -5,7 +5,7 @@ using UnityEngine;
 public class CardController : MonoBehaviour
 {
     public CardView view;// 見た目の操作
-    CardModel model;// データの操作
+    public CardModel model;// データの操作
     public bool canchoice=false;
     public bool choice = false;
     private void Awake()

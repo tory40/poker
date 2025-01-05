@@ -113,6 +113,7 @@ public class Drow : MonoBehaviour
             deck.RemoveAt(disdeck[i]);
             GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyDiscard(disdeck[i]);
         }
+
         //“G‚Ìˆ—‚à’Ç‰Á
         SortCard(false);
         if(!fastadd)
@@ -165,9 +166,16 @@ public class Drow : MonoBehaviour
     public async void DrowcardCopy(int j,bool hide)
     {
         memory = 0;
-        for(int i=0; i < deck.Count && deck[i]<j;++i)
+        for(int i=0; i < deck.Count;++i)
         {
-            memory = i;
+            if(deck[i] < j)
+            {
+                memory = i+1;
+            }
+            else
+            {
+                cards[i].model.card += 1;
+            }
         }
         deck.Insert(memory,j);
         layout.enabled = false;
@@ -176,11 +184,13 @@ public class Drow : MonoBehaviour
         card.transform.SetParent(field, false);
         // CardController card = Instantiate(cardPrefab, field, false);
         card.Init(deck[memory], memory);
+        card.model.card = memory;
         if (hide)
         {
             card.view.Hide();
         }
         cards.Add(card);
+        card.transform.SetSiblingIndex(memory);
         await UniTask.Delay(200);
         layout.enabled = true;
         Layout(layout);
