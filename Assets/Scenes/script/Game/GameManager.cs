@@ -534,8 +534,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void EnemyDiscard2(int i)
     {
+        enemydrow.cards.Sort((a, b) => a.model.card - b.model.card);
         enemydrow.deck.RemoveAt(i);
-        enemydrow.SortCard(true);
+        Destroy(enemydrow.cards[i].gameObject);
+        enemydrow.cards.RemoveAt(i);
     }
     public void EnemyAddcard(int i)
     {

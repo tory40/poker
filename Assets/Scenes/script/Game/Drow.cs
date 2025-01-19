@@ -12,13 +12,13 @@ public class Drow : MonoBehaviour
     [SerializeField] GameObject changebutton;
     int discard;
     bool free=false;
-    [SerializeField] Transform field;
+    [SerializeField] public Transform field;
     [SerializeField] CardController cardPrefab;
     public List<int> deck = new List<int>();
     List<int> numbers = new List<int>();
     List<int> marks = new List<int>();
     int cardID;
-    List<CardController> cards = new List<CardController>();
+    public List<CardController> cards = new List<CardController>();
     int hand = 0;
     public List<int> disdeck = new List<int>();
     public bool fastadd;
@@ -110,12 +110,14 @@ public class Drow : MonoBehaviour
         disdeck.Reverse();
         for(int i=0;i<disdeck.Count;++i)
         {
+            cards.Sort((a, b) => a.model.card - b.model.card);
             deck.RemoveAt(disdeck[i]);
+            Destroy(cards[disdeck[i]].gameObject);
+            cards.RemoveAt(disdeck[i]);
             GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyDiscard(disdeck[i]);
         }
 
         //ìGÇÃèàóùÇ‡í«â¡
-        SortCard(false);
         if(!fastadd)
         {
             AddCard(discard);
