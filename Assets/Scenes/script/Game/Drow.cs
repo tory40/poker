@@ -111,14 +111,22 @@ public class Drow : MonoBehaviour
         for(int i=0;i<disdeck.Count;++i)
         {
             cards.Sort((a, b) => a.model.card - b.model.card);
+            foreach(var card in deck)
+            {
+                Debug.Log(card);
+            }
+            Debug.Log("number" + disdeck[i]);
             deck.RemoveAt(disdeck[i]);
             Destroy(cards[disdeck[i]].gameObject);
             cards.RemoveAt(disdeck[i]);
             GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyDiscard(disdeck[i]);
         }
-
+        for (int i = 0; i < deck.Count; ++i)
+        {
+            cards[i].model.card += i;
+        }
         //“G‚Ìˆ—‚à’Ç‰Á
-        if(!fastadd)
+        if (!fastadd)
         {
             AddCard(discard);
         }
