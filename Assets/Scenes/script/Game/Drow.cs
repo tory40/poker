@@ -121,9 +121,20 @@ public class Drow : MonoBehaviour
             cards.RemoveAt(disdeck[i]);
             GameObject.Find("Gamemaneger").GetComponent<GameManager>().EnemyDiscard(disdeck[i]);
         }
+        disdeck.Sort();
         for (int i = 0; i < deck.Count; ++i)
         {
-            cards[i].model.card += i;
+            int k = 0;
+            for(int j=0;j<disdeck.Count;++j)
+            {
+                if(disdeck[j]<cards[i].model.card)
+                {
+                    k++;
+                }
+            }
+            Debug.Log(k);
+            Debug.Log(cards[i].model.card);
+            cards[i].model.card -= k;
         }
         //“G‚Ìˆ—‚à’Ç‰Á
         if (!fastadd)
@@ -195,6 +206,7 @@ public class Drow : MonoBehaviour
         // CardController card = Instantiate(cardPrefab, field, false);
         card.Init(deck[memory], memory);
         card.model.card = memory;
+        Debug.Log("ƒJ[ƒhID" + memory);
         if (hide)
         {
             card.view.Hide();

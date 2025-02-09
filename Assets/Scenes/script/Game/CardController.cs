@@ -37,7 +37,7 @@ public class CardController : MonoBehaviour
                 GameObject.Find("MyCard").GetComponent<Drow>().disdeck.Add(model.card);
                 GameObject.Find("MyCard").GetComponent<Drow>().DiscardChoice(true);
             }
-            
+            Debug.Log(model.card);
         }
     }
 }
